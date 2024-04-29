@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "923816113428",
+    "project_id": "koimedic",
+    "storage_bucket": "koimedic.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:923816113428:android:e7254b159d9591b3b1fe01",
+        "android_client_info": {
+          "package_name": "com.example.koimedic"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBpTTDWLAA3J3xIui6my25k-U3o61s_oGk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
