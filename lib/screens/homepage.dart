@@ -15,7 +15,7 @@ class _HomepageState extends State<Homepage> {
 
   Future<void> signout() async {
     await FirebaseAuth.instance.signOut();
-    Get.to(Loginpage());
+    Get.to(const Loginpage());
   }
 
   @override
