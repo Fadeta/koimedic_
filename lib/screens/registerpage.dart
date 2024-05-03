@@ -45,16 +45,46 @@ class _RegisterpageState extends State<Registerpage> {
           children: [
             TextField(
               controller: namafarm,
-              decoration: const InputDecoration(hintText: 'Enter Name Farm'),
+              decoration: InputDecoration(
+                hintText: 'Enter Name Farm',
+                contentPadding: const EdgeInsets.all(18),
+                border: OutlineInputBorder(
+                  borderSide: const BorderSide(color: Colors.black),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 10,
             ),
             TextField(
               controller: email,
-              decoration: const InputDecoration(hintText: 'Enter Email'),
+              decoration: InputDecoration(
+                hintText: 'Enter Email',
+                contentPadding: const EdgeInsets.all(18),
+                border: OutlineInputBorder(
+                  borderSide: const BorderSide(color: Colors.black),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 10,
             ),
             TextField(
               controller: password,
-              decoration: const InputDecoration(hintText: 'Enter Password'),
+              decoration: InputDecoration(
+                hintText: 'Enter Password',
+                contentPadding: const EdgeInsets.all(18),
+                border: OutlineInputBorder(
+                  borderSide: const BorderSide(color: Colors.black),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
               obscureText: true,
+            ),
+            const SizedBox(
+              height: 10,
             ),
             ElevatedButton(
               onPressed: () async {
