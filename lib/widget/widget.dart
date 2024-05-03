@@ -62,6 +62,7 @@ class _CustomElevatedButtonState extends State<CustomElevatedButton> {
         setState(() {
           loading = true;
         });
+        // ignore: unnecessary_null_comparison
         if (widget.function != null) {
           await widget.function!();
         }
