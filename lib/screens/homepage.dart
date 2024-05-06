@@ -1,7 +1,5 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:koimedic/screens/loginpage.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({super.key});
@@ -11,25 +9,79 @@ class Homepage extends StatefulWidget {
 }
 
 class _HomepageState extends State<Homepage> {
-  final user = FirebaseAuth.instance.currentUser;
+  int _selectedIndex = 0;
 
-  Future<void> signout() async {
-    await FirebaseAuth.instance.signOut();
-    Get.to(const Loginpage());
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Homepage"),
+        automaticallyImplyLeading: false,
+        backgroundColor: Colors.white,
+        actions: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
+            child: Container(
+              alignment: Alignment.bottomCenter,
+              height: MediaQuery.of(context).size.height * 0.06,
+              width: MediaQuery.of(context).size.width * 0.06,
+              child: const Icon(
+                CupertinoIcons.bell,
+                color: Colors.black,
+              ),
+            ),
+          ),
+        ],
+        title: const Column(
+          children: [
+            SizedBox(
+              height: 50,
+            ),
+            Text(
+              "Mulai diagnosa ikan Koi anda!",
+              style: TextStyle(
+                  color: Colors.black,
+                  fontFamily: "Urbanist-SemiBold",
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600,
+                  letterSpacing: 1),
+            )
+          ],
+        ),
+        toolbarHeight: 130,
+        elevation: 0,
       ),
-      body: Center(
-        child: Text(user != null ? user!.email ?? 'No Email' : 'Not Logged In'),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => signout(),
-        child: const Icon(Icons.logout_rounded),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.home,
+              color: Colors.black,
+            ),
+            label: '',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.search,
+              color: Colors.black,
+            ),
+            label: '',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.person_outline,
+              color: Colors.black,
+            ),
+            label: '',
+          ),
+        ],
       ),
     );
   }
