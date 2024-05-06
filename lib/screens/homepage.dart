@@ -1,5 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:koimedic/screens/profilepage.dart';
+import 'package:koimedic/widget/list.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({super.key});
@@ -15,6 +18,15 @@ class _HomepageState extends State<Homepage> {
     setState(() {
       _selectedIndex = index;
     });
+
+    switch (index) {
+      case 0:
+        Get.off(() => const Homepage()); // Pindah ke halaman beranda
+        break;
+      case 1:
+        Get.to(() => const Profilepage()); // Pindah ke halaman profil
+        break;
+    }
   }
 
   @override
@@ -56,30 +68,53 @@ class _HomepageState extends State<Homepage> {
         toolbarHeight: 130,
         elevation: 0,
       ),
+      backgroundColor: Colors.white,
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                listIcons(
+                  Icon: "assets/images/icondiagnosa.png",
+                  text: "Diagnosa",
+                  height: 150,
+                ),
+                listIcons(
+                  Icon: "assets/images/icondetail.png",
+                  text: "Informasi",
+                  height: 150,
+                ),
+                listIcons(
+                  Icon: "assets/images/iconhistory.png",
+                  text: "History",
+                  height: 150,
+                ),
+              ],
+            )
+          ],
+        ),
+      ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
+        backgroundColor: Colors.white,
+        selectedItemColor: Colors.black,
+        unselectedItemColor: Colors.grey[500],
+        selectedFontSize: 14,
+        unselectedFontSize: 12,
         items: const [
           BottomNavigationBarItem(
             icon: Icon(
               Icons.home,
-              color: Colors.black,
             ),
-            label: '',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.search,
-              color: Colors.black,
-            ),
-            label: '',
+            label: 'Home',
           ),
           BottomNavigationBarItem(
             icon: Icon(
               Icons.person_outline,
-              color: Colors.black,
             ),
-            label: '',
+            label: 'Profile',
           ),
         ],
       ),
