@@ -52,10 +52,10 @@ class _HomepageState extends State<Homepage> {
         title: const Column(
           children: [
             SizedBox(
-              height: 50,
+              height: 40,
             ),
             Text(
-              "Mulai diagnosa ikan Koi anda!",
+              "Hi, Astrokoi Farm \nMulai diagnosa ikan Koi anda!",
               style: TextStyle(
                   color: Colors.black,
                   fontFamily: "Urbanist-SemiBold",
@@ -70,28 +70,69 @@ class _HomepageState extends State<Homepage> {
       ),
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
+        scrollDirection: Axis.vertical,
         child: Column(
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+            const SizedBox(
+              height: 20,
+            ),
+            Center(
+              child: Container(
+                height: MediaQuery.of(context).size.height * 0.06,
+                width: MediaQuery.of(context).size.width * 0.9,
+                decoration: const BoxDecoration(),
+                child: TextField(
+                  onTap: () {},
+                  textAlign: TextAlign.start,
+                  textInputAction: TextInputAction.none,
+                  autofocus: false,
+                  obscureText: false,
+                  keyboardType: TextInputType.emailAddress,
+                  textAlignVertical: TextAlignVertical.center,
+                  decoration: InputDecoration(
+                    focusColor: Colors.black26,
+                    fillColor: const Color.fromARGB(255, 247, 247, 247),
+                    filled: true,
+                    prefixIcon: const Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 10,
+                      ),
+                      child: SizedBox(
+                        height: 10,
+                        width: 10,
+                      ),
+                    ),
+                    prefixIconColor: const Color.fromARGB(255, 3, 190, 150),
+                    label: const Text("Search doctor, drugs, articles..."),
+                    floatingLabelBehavior: FloatingLabelBehavior.never,
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide.none,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            const Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                listIcons(
-                  Icon: "assets/images/icondiagnosa.png",
-                  text: "Diagnosa",
-                  height: 150,
+                MenuItem(
+                  icon: CupertinoIcons.plus,
+                  label: "Diagnosa",
                 ),
-                listIcons(
-                  Icon: "assets/images/icondetail.png",
-                  text: "Informasi",
-                  height: 150,
+                MenuItem(
+                  icon: Icons.history_rounded,
+                  label: "Riwayat",
                 ),
-                listIcons(
-                  Icon: "assets/images/iconhistory.png",
-                  text: "History",
-                  height: 150,
+                MenuItem(
+                  icon: Icons.info_outline,
+                  label: "Detail",
                 ),
               ],
-            )
+            ),
           ],
         ),
       ),
