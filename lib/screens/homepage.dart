@@ -1,8 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:koimedic/screens/menu/detailpage.dart';
+import 'package:koimedic/screens/menu/diagnosapage.dart';
+import 'package:koimedic/screens/menu/historypage.dart';
 import 'package:koimedic/screens/profilepage.dart';
-import 'package:koimedic/widget/list.dart';
+import 'package:koimedic/widget/menu.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({super.key});
@@ -21,10 +24,10 @@ class _HomepageState extends State<Homepage> {
 
     switch (index) {
       case 0:
-        Get.off(() => const Homepage()); // Pindah ke halaman beranda
+        Get.off(() => const Homepage());
         break;
       case 1:
-        Get.to(() => const Profilepage()); // Pindah ke halaman profil
+        Get.to(() => const Profilepage());
         break;
     }
   }
@@ -32,6 +35,7 @@ class _HomepageState extends State<Homepage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white54,
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: Colors.white,
@@ -58,9 +62,9 @@ class _HomepageState extends State<Homepage> {
               "Hi, Astrokoi Farm \nMulai diagnosa ikan Koi anda!",
               style: TextStyle(
                   color: Colors.black,
-                  fontFamily: "Urbanist-SemiBold",
+                  fontFamily: "Urbanist-Bold",
                   fontSize: 20,
-                  fontWeight: FontWeight.w600,
+                  fontWeight: FontWeight.w700,
                   letterSpacing: 1),
             )
           ],
@@ -68,7 +72,6 @@ class _HomepageState extends State<Homepage> {
         toolbarHeight: 130,
         elevation: 0,
       ),
-      backgroundColor: Colors.white,
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,
         child: Column(
@@ -76,60 +79,29 @@ class _HomepageState extends State<Homepage> {
             const SizedBox(
               height: 20,
             ),
-            Center(
-              child: Container(
-                height: MediaQuery.of(context).size.height * 0.06,
-                width: MediaQuery.of(context).size.width * 0.9,
-                decoration: const BoxDecoration(),
-                child: TextField(
-                  onTap: () {},
-                  textAlign: TextAlign.start,
-                  textInputAction: TextInputAction.none,
-                  autofocus: false,
-                  obscureText: false,
-                  keyboardType: TextInputType.emailAddress,
-                  textAlignVertical: TextAlignVertical.center,
-                  decoration: InputDecoration(
-                    focusColor: Colors.black26,
-                    fillColor: const Color.fromARGB(255, 247, 247, 247),
-                    filled: true,
-                    prefixIcon: const Padding(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 10,
-                      ),
-                      child: SizedBox(
-                        height: 10,
-                        width: 10,
-                      ),
-                    ),
-                    prefixIconColor: const Color.fromARGB(255, 3, 190, 150),
-                    label: const Text("Search doctor, drugs, articles..."),
-                    floatingLabelBehavior: FloatingLabelBehavior.never,
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide.none,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            const Row(
+            Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 MenuItem(
                   icon: CupertinoIcons.plus,
                   label: "Diagnosa",
+                  onTap: () {
+                    Get.to(const Diagnosapage());
+                  },
                 ),
                 MenuItem(
                   icon: Icons.history_rounded,
                   label: "Riwayat",
+                  onTap: () {
+                    Get.to(const Historypage());
+                  },
                 ),
                 MenuItem(
                   icon: Icons.info_outline,
                   label: "Detail",
+                  onTap: () {
+                    Get.to(const Detailpage());
+                  },
                 ),
               ],
             ),
