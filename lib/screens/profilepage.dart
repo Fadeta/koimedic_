@@ -57,26 +57,41 @@ class _ProfilepageState extends State<Profilepage> {
             ),
             const SizedBox(height: 20),
             const Text(
-              "Astrokoi Farm", // Ganti dengan nama farm Anda
+              "Astrokoi Farm",
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
+                fontFamily: "Urbanist-Bold",
               ),
             ),
             const SizedBox(height: 10),
             Text(
               user != null ? user!.email ?? 'No Email' : 'Not Logged In',
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 18,
-                color: Colors.grey[700],
+                color: Colors.black,
+              ),
+            ),
+            const SizedBox(height: 20),
+            Padding(
+              padding: const EdgeInsets.all(50.0),
+              child: ListTile(
+                leading: const Icon(
+                  Icons.logout_rounded,
+                  color: Colors.black,
+                ),
+                title: const Text(
+                  'Log Out',
+                  style: TextStyle(
+                    fontFamily: "Urbanist-SemiBold",
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                onTap: () => signOut(),
               ),
             ),
           ],
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => signOut(),
-        child: const Icon(Icons.logout_rounded),
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,

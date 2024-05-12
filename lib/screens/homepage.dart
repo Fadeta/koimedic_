@@ -5,6 +5,7 @@ import 'package:koimedic/screens/menu/detailpage.dart';
 import 'package:koimedic/screens/menu/diagnosapage.dart';
 import 'package:koimedic/screens/menu/historypage.dart';
 import 'package:koimedic/screens/profilepage.dart';
+import 'package:koimedic/widget/banner.dart';
 import 'package:koimedic/widget/menu.dart';
 
 class Homepage extends StatefulWidget {
@@ -63,7 +64,7 @@ class _HomepageState extends State<Homepage> {
               style: TextStyle(
                   color: Colors.black,
                   fontFamily: "Urbanist-Bold",
-                  fontSize: 20,
+                  fontSize: 18,
                   fontWeight: FontWeight.w700,
                   letterSpacing: 1),
             )
@@ -105,6 +106,29 @@ class _HomepageState extends State<Homepage> {
                 ),
               ],
             ),
+            const SizedBox(
+              height: 20,
+            ),
+            const Bannerpage(),
+            const SizedBox(
+              height: 20,
+            ),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 30),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Artikel",
+                    style: TextStyle(
+                      fontFamily: "Urbanist-Bold",
+                      fontSize: 18,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ],
+              ),
+            )
           ],
         ),
       ),
