@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:koimedic/screens/menu/detailpage.dart';
 import 'package:koimedic/screens/menu/diagnosapage.dart';
 import 'package:koimedic/screens/menu/historypage.dart';
-import 'package:koimedic/screens/profilepage.dart';
 import 'package:koimedic/widget/banner.dart';
 import 'package:koimedic/widget/menu.dart';
 
@@ -16,23 +15,6 @@ class Homepage extends StatefulWidget {
 }
 
 class _HomepageState extends State<Homepage> {
-  int _selectedIndex = 0;
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-
-    switch (index) {
-      case 0:
-        Get.off(() => const Homepage());
-        break;
-      case 1:
-        Get.to(() => const Profilepage());
-        break;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -131,29 +113,6 @@ class _HomepageState extends State<Homepage> {
             )
           ],
         ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
-        backgroundColor: Colors.white,
-        selectedItemColor: Colors.black,
-        unselectedItemColor: Colors.grey[500],
-        selectedFontSize: 14,
-        unselectedFontSize: 12,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.home,
-            ),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.person_outline,
-            ),
-            label: 'Profile',
-          ),
-        ],
       ),
     );
   }

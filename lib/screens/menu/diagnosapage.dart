@@ -2,9 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:koimedic/screens/dashboard.dart';
 import 'package:koimedic/screens/diagnosa/diagnosamodel.dart';
 import 'package:koimedic/screens/fade_animation.dart';
-import 'package:koimedic/screens/homepage.dart';
 import 'package:koimedic/widget/common.dart';
 
 class Diagnosapage extends StatefulWidget {
@@ -45,7 +45,7 @@ class _DiagnosapageState extends State<Diagnosapage> {
                   delay: 1,
                   child: IconButton(
                     onPressed: () {
-                      Get.to(const Homepage());
+                      Get.to(const Dashboard());
                     },
                     icon: const Icon(
                       CupertinoIcons.back,

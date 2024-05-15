@@ -2,10 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:koimedic/screens/diagnosa/forwardchaining.dart';
-
+import 'package:koimedic/screens/menu/diagnosapage.dart';
 import '../../widget/common.dart';
 import '../fade_animation.dart';
-import '../homepage.dart';
 
 class Diagnosamodel extends StatefulWidget {
   const Diagnosamodel({super.key});
@@ -14,31 +13,7 @@ class Diagnosamodel extends StatefulWidget {
   State<Diagnosamodel> createState() => _DiagnosamodelState();
 }
 
-class _DiagnosamodelState extends State<Diagnosamodel>
-    with SingleTickerProviderStateMixin {
-  late final AnimationController _controller;
-  late final Animation<double> _animation;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = AnimationController(
-      duration: const Duration(seconds: 2),
-      vsync: this,
-    )..repeat(reverse: true);
-
-    _animation = CurvedAnimation(
-      parent: _controller,
-      curve: Curves.easeInOut,
-    );
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
+class _DiagnosamodelState extends State<Diagnosamodel> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,7 +27,7 @@ class _DiagnosamodelState extends State<Diagnosamodel>
                 delay: 1,
                 child: IconButton(
                   onPressed: () {
-                    Get.to(const Homepage());
+                    Get.to(const Diagnosapage());
                   },
                   icon: const Icon(
                     CupertinoIcons.back,
@@ -60,11 +35,8 @@ class _DiagnosamodelState extends State<Diagnosamodel>
                   ),
                 ),
               ),
-              const SizedBox(
-                height: 10,
-              ),
               Padding(
-                padding: const EdgeInsets.all(12.0),
+                padding: const EdgeInsets.all(10.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -79,54 +51,47 @@ class _DiagnosamodelState extends State<Diagnosamodel>
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.all(16.0),
+                padding: const EdgeInsets.all(10.0),
                 child: Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      ScaleTransition(
-                        scale: _animation,
-                        child: Image.asset(
-                          'assets/images/logo1.png',
-                          width: 150,
-                          height: 150,
-                        ),
+                      Image.asset(
+                        'assets/images/koi.png',
+                        height: 340,
+                        width: 340,
                       ),
-                      const SizedBox(height: 40),
+                      const SizedBox(height: 20),
                       ElevatedButton(
                         onPressed: () {
                           Get.to(const Forwardchaining());
                         },
                         style: ElevatedButton.styleFrom(
-                          //primary: Colors.blueAccent, // Background color
                           padding: const EdgeInsets.symmetric(
                               horizontal: 40, vertical: 20),
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30),
+                            borderRadius: BorderRadius.circular(12),
                           ),
                           elevation: 5,
                         ),
                         child: const Text(
-                          'Forward Chaining',
+                          'Diagnosa berdasarkan gejala',
                           style: TextStyle(fontSize: 18),
                         ),
                       ),
                       const SizedBox(height: 20),
                       ElevatedButton(
-                        onPressed: () {
-                          // Aksi untuk metode Backward Chaining
-                        },
+                        onPressed: () {},
                         style: ElevatedButton.styleFrom(
-                          //primary: Colors.green, // Background color
                           padding: const EdgeInsets.symmetric(
                               horizontal: 40, vertical: 20),
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30),
+                            borderRadius: BorderRadius.circular(12),
                           ),
                           elevation: 5,
                         ),
                         child: const Text(
-                          'Backward Chaining',
+                          'Cari penyebab berdasarkan penyakit',
                           style: TextStyle(fontSize: 18),
                         ),
                       ),

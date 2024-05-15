@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:koimedic/screens/homepage.dart';
 import 'package:koimedic/screens/loginpage.dart';
 
 class Profilepage extends StatefulWidget {
@@ -17,23 +16,6 @@ class _ProfilepageState extends State<Profilepage> {
   Future<void> signOut() async {
     await FirebaseAuth.instance.signOut();
     Get.to(const Loginpage());
-  }
-
-  int _selectedIndex = 0;
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-
-    switch (index) {
-      case 0:
-        Get.off(() => const Homepage());
-        break;
-      case 1:
-        Get.to(() => const Profilepage());
-        break;
-    }
   }
 
   @override
@@ -92,29 +74,6 @@ class _ProfilepageState extends State<Profilepage> {
             ),
           ],
         ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
-        backgroundColor: Colors.white,
-        selectedItemColor: Colors.black,
-        unselectedItemColor: Colors.grey[500],
-        selectedFontSize: 14,
-        unselectedFontSize: 12,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.home,
-            ),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.person_outline,
-            ),
-            label: 'Profile',
-          ),
-        ],
       ),
     );
   }
