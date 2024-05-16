@@ -19,87 +19,93 @@ class _DiagnosamodelState extends State<Diagnosamodel> {
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(20.0),
-        child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              FadeAnimation(
-                delay: 1,
-                child: IconButton(
-                  onPressed: () {
-                    Get.to(const Diagnosapage());
-                  },
-                  icon: const Icon(
-                    CupertinoIcons.back,
-                    size: 35,
+        child: SingleChildScrollView(
+          child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                FadeAnimation(
+                  delay: 1,
+                  child: IconButton(
+                    onPressed: () {
+                      Get.to(const Diagnosapage());
+                    },
+                    icon: const Icon(
+                      CupertinoIcons.back,
+                      size: 35,
+                    ),
                   ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    FadeAnimation(
-                      delay: 1.3,
-                      child: Text(
-                        "Pilih metode diagnosa penyakit ikan koi!",
-                        style: Common().titelTheme,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Center(
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Image.asset(
-                        'assets/images/koi.png',
-                        height: 340,
-                        width: 340,
-                      ),
-                      const SizedBox(height: 20),
-                      ElevatedButton(
-                        onPressed: () {
-                          Get.to(const Forwardchaining());
-                        },
-                        style: ElevatedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 40, vertical: 20),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          elevation: 5,
-                        ),
-                        child: const Text(
-                          'Diagnosa berdasarkan gejala',
-                          style: TextStyle(fontSize: 18),
-                        ),
-                      ),
-                      const SizedBox(height: 20),
-                      ElevatedButton(
-                        onPressed: () {},
-                        style: ElevatedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 40, vertical: 20),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          elevation: 5,
-                        ),
-                        child: const Text(
-                          'Cari penyebab berdasarkan penyakit',
-                          style: TextStyle(fontSize: 18),
+                      FadeAnimation(
+                        delay: 1.3,
+                        child: Text(
+                          "Pilih metode diagnosa penyakit ikan koi!",
+                          style: Common().titelTheme,
                         ),
                       ),
                     ],
                   ),
                 ),
-              ),
-            ]),
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          'assets/images/koi.png',
+                          height: 340,
+                          width: 340,
+                        ),
+                        const SizedBox(height: 20),
+                        ElevatedButton(
+                          onPressed: () {
+                            Get.to(const Forwardchaining());
+                          },
+                          style: ElevatedButton.styleFrom(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 40, vertical: 20),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            elevation: 5,
+                          ),
+                          child: const Center(
+                            child: Text(
+                              'Diagnosa berdasarkan gejala',
+                              style: TextStyle(fontSize: 18),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        ElevatedButton(
+                          onPressed: () {},
+                          style: ElevatedButton.styleFrom(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 40, vertical: 20),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            elevation: 5,
+                          ),
+                          child: const Center(
+                            child: Text(
+                              'Cari penyebab berdasarkan penyakit',
+                              style: TextStyle(fontSize: 18),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ]),
+        ),
       ),
     );
   }
