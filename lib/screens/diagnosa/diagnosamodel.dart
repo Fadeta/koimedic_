@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:koimedic/screens/diagnosa/backwardchaining.dart';
 import 'package:koimedic/screens/diagnosa/forwardchaining.dart';
 import 'package:koimedic/screens/menu/diagnosapage.dart';
 import '../../widget/common.dart';
@@ -68,35 +69,55 @@ class _DiagnosamodelState extends State<Diagnosamodel> {
                             Get.to(const Forwardchaining());
                           },
                           style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.black,
                             padding: const EdgeInsets.symmetric(
-                                horizontal: 40, vertical: 20),
+                                horizontal: 15, vertical: 20),
                             shape: RoundedRectangleBorder(
+                              side: const BorderSide(color: Colors.white30),
                               borderRadius: BorderRadius.circular(12),
                             ),
                             elevation: 5,
                           ),
                           child: const Center(
-                            child: Text(
-                              'Diagnosa berdasarkan gejala',
-                              style: TextStyle(fontSize: 18),
+                            child: Center(
+                              child: Text(
+                                'Diagnosa berdasarkan gejala',
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  color: Colors.white,
+                                  fontFamily: "Urbanist-SemiBold",
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                             ),
                           ),
                         ),
                         const SizedBox(height: 20),
                         ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Get.to(const BackwardChainingPage());
+                          },
                           style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.black,
+                            side: const BorderSide(color: Colors.white30),
                             padding: const EdgeInsets.symmetric(
-                                horizontal: 40, vertical: 20),
+                                horizontal: 15, vertical: 20),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12),
                             ),
                             elevation: 5,
                           ),
                           child: const Center(
-                            child: Text(
-                              'Cari penyebab berdasarkan penyakit',
-                              style: TextStyle(fontSize: 18),
+                            child: Center(
+                              child: Text(
+                                'Cari penyebab berdasarkan penyakit',
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  color: Colors.white,
+                                  fontFamily: "Urbanist-SemiBold",
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                             ),
                           ),
                         ),
