@@ -6,6 +6,7 @@ import 'package:koimedic/screens/dashboard.dart';
 import 'package:koimedic/screens/diagnosa/diagnosamodel.dart';
 import 'package:koimedic/screens/fade_animation.dart';
 import 'package:koimedic/widget/common.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Diagnosapage extends StatefulWidget {
   const Diagnosapage({super.key});
@@ -20,10 +21,17 @@ class _DiagnosapageState extends State<Diagnosapage> {
   final jeniskoi = TextEditingController();
   final umur = TextEditingController();
 
+  Future<String> getEmail() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('email') ?? '';
+  }
+
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   datakoi() async {
+    final email = await getEmail();
     await FirebaseFirestore.instance.collection('users').add({
+      'email': email,
       'namakoi': namakoi.text,
       'jeniskoi': jeniskoi.text,
       'umur': umur.text,
@@ -119,7 +127,8 @@ class _DiagnosapageState extends State<Diagnosapage> {
                 Align(
                   alignment: Alignment.bottomCenter,
                   child: ElevatedButton(
-                    onPressed: () {
+                    onPressed: () async {
+                      await datakoi();
                       Get.to(const Diagnosamodel());
                     },
                     style: ElevatedButton.styleFrom(
@@ -132,7 +141,7 @@ class _DiagnosapageState extends State<Diagnosapage> {
                           vertical: 15, horizontal: 50),
                     ),
                     child: const Text(
-                      "Next",
+                      "Selanjutnya",
                       style: TextStyle(
                           color: Colors.white,
                           fontSize: 18,

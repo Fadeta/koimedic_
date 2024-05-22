@@ -52,6 +52,9 @@ class _DiagnosamodelState extends State<Diagnosamodel> {
                     ],
                   ),
                 ),
+                const SizedBox(
+                  height: 20,
+                ),
                 Padding(
                   padding: const EdgeInsets.all(10.0),
                   child: Center(
@@ -60,10 +63,10 @@ class _DiagnosamodelState extends State<Diagnosamodel> {
                       children: [
                         Image.asset(
                           'assets/images/koi.png',
-                          height: 340,
-                          width: 340,
+                          height: 360,
+                          width: 360,
                         ),
-                        const SizedBox(height: 20),
+                        const SizedBox(height: 40),
                         ElevatedButton(
                           onPressed: () {
                             Get.to(const Forwardchaining());
@@ -110,7 +113,7 @@ class _DiagnosamodelState extends State<Diagnosamodel> {
                           child: const Center(
                             child: Center(
                               child: Text(
-                                'Cari penyebab berdasarkan penyakit',
+                                'Diagnosa bedasarkan penyakit',
                                 style: TextStyle(
                                   fontSize: 18,
                                   color: Colors.white,

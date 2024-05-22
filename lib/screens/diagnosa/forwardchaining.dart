@@ -56,8 +56,22 @@ class _ForwardchainingState extends State<Forwardchaining> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Diagnosis Result'),
-          content: Text(diagnosis),
+          title: const Center(
+            child: Text(
+              'Hasil Diagnosa',
+              style: TextStyle(
+                fontFamily: "Urbanist-SemiBold",
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+          ),
+          content: Text(
+            diagnosis,
+            style: const TextStyle(
+              fontFamily: "Urbanist",
+              fontWeight: FontWeight.w500,
+            ),
+          ),
           actions: <Widget>[
             TextButton(
               onPressed: () {

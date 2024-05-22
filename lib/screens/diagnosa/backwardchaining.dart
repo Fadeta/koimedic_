@@ -86,11 +86,23 @@ class _BackwardChainingPageState extends State<BackwardChainingPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Diagnosis Result'),
+          title: const Center(
+            child: Text(
+              'Hasil Diagnosa',
+              style: TextStyle(
+                fontFamily: "Urbanist-SemiBold",
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+          ),
           content: Text(
-            'Penyakit yang dipilih: ${result['disease']}\n'
-            'Gejala-gejala yang dipilih: ${result['selected_symptoms'].join(', ')}\n'
-            'Akurasi: ${result['accuracy']}',
+            'Penyakit yang dipilih:\n ${result['disease']}\n'
+            'Gejala-gejala yang dipilih:\n ${result['selected_symptoms'].join(', ')}\n'
+            'Akurasi:\n ${result['accuracy']}',
+            style: const TextStyle(
+              fontFamily: "Urbanist",
+              fontWeight: FontWeight.w500,
+            ),
           ),
           actions: <Widget>[
             TextButton(
