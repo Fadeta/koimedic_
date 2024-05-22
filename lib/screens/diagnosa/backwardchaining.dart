@@ -1,34 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
-final Map<String, List<String>> diseaseSymptoms = {
-  'White Spot': [
-    'Menurunnya kekebalan tubuh atau lemas',
-    'Badan ikan kurus',
-    'Terdapat bintik-bintik putih'
-  ],
-  'Black Spot': [
-    'Menurunnya kekebalan tubuh atau lemas',
-    'Badan ikan kurus',
-    'Terdapat bintik-bintik hitam'
-  ],
-  'Cloudy Eyes': ['Mata berkabut', 'Produksi lendir berlebih', 'Mata menonjol'],
-  'Dropsy': [
-    'Badan gembur'
-        'Perut membengkak',
-    'Sisik nanas atau mulai menanggal dari badan ikan',
-    'Kesulitan dalam berenang'
-  ],
-  'Fin/Tail Rot': [
-    'Menurunnya kekebalan tubuh atau lemas',
-    'Sirip dan ekor mulai membusuk',
-    'Tulang sirip dan ekor buram'
-  ],
-  'Kutu Jangkar': [
-    'Menurunnya kekebalan tubuh atau lemas',
-    'Terdapat cacing yang menempel pada tubuh',
-    'Sering menggesekkan tubuh pada dinding',
-  ],
-};
+const String baseUrl = 'http://127.0.0.1:5001';
 
 class BackwardChainingPage extends StatefulWidget {
   const BackwardChainingPage({super.key});
@@ -39,30 +13,85 @@ class BackwardChainingPage extends StatefulWidget {
 
 class _BackwardChainingPageState extends State<BackwardChainingPage> {
   String? selectedDisease;
-  List<String> selectedSymptoms = [];
+  List<String> diseases = [];
+  List<String> symptoms = [];
   Map<String, bool> symptomSelection = {};
+
+  @override
+  void initState() {
+    super.initState();
+    fetchDiseases();
+  }
+
+  Future<void> fetchDiseases() async {
+    final response = await http.get(Uri.parse('$baseUrl/diseases'));
+    if (response.statusCode == 200) {
+      setState(() {
+        diseases = List<String>.from(json.decode(response.body));
+      });
+    } else {
+      // Handle error
+      print('Failed to load diseases');
+    }
+  }
+
+  Future<void> fetchSymptoms(String disease) async {
+    final response =
+        await http.get(Uri.parse('$baseUrl/symptoms?disease=$disease'));
+    if (response.statusCode == 200) {
+      setState(() {
+        symptoms = List<String>.from(json.decode(response.body));
+        symptomSelection = {for (var symptom in symptoms) symptom: false};
+      });
+    } else {
+      // Handle error
+      print('Failed to load symptoms');
+    }
+  }
+
+  Future<void> diagnose() async {
+    final selectedSymptoms = symptomSelection.entries
+        .where((entry) => entry.value)
+        .map((entry) => entry.key)
+        .toList();
+    final response = await http.post(
+      Uri.parse('$baseUrl/diagnosabackward'),
+      headers: {'Content-Type': 'application/json'},
+      body: json.encode({
+        'disease': selectedDisease,
+        'symptoms': selectedSymptoms,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      final result = json.decode(response.body);
+      _showDiagnosisDialog(result);
+    } else {
+      // Handle error
+      print('Failed to diagnose');
+    }
+  }
 
   void _onDiseaseSelected(String? disease) {
     setState(() {
       selectedDisease = disease;
-      selectedSymptoms = disease != null ? diseaseSymptoms[disease]! : [];
-      symptomSelection = {for (var symptom in selectedSymptoms) symptom: false};
     });
+    if (disease != null) {
+      fetchSymptoms(disease);
+    }
   }
 
-  void _showDiagnosisDialog() {
-    int selectedCount =
-        symptomSelection.values.where((bool value) => value).length;
-    int totalSymptoms = selectedSymptoms.length;
-    double accuracy = (selectedCount / totalSymptoms) * 100;
-
+  void _showDiagnosisDialog(Map<String, dynamic> result) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           title: const Text('Diagnosis Result'),
           content: Text(
-              'Penyakit yang dipilih: $selectedDisease\nGejala-gejala yang dipilih: ${symptomSelection.keys.where((key) => symptomSelection[key]!).join(', ')}\nAkurasi: ${accuracy.toStringAsFixed(2)}%'),
+            'Penyakit yang dipilih: ${result['disease']}\n'
+            'Gejala-gejala yang dipilih: ${result['selected_symptoms'].join(', ')}\n'
+            'Akurasi: ${result['accuracy']}',
+          ),
           actions: <Widget>[
             TextButton(
               onPressed: () {
@@ -102,7 +131,7 @@ class _BackwardChainingPageState extends State<BackwardChainingPage> {
             DropdownButton<String>(
               value: selectedDisease,
               hint: const Text('Pilih Penyakit'),
-              items: diseaseSymptoms.keys.map((String disease) {
+              items: diseases.map((String disease) {
                 return DropdownMenuItem<String>(
                   value: disease,
                   child: Text(disease),
@@ -140,7 +169,7 @@ class _BackwardChainingPageState extends State<BackwardChainingPage> {
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(16.0),
         child: ElevatedButton(
-          onPressed: _showDiagnosisDialog,
+          onPressed: diagnose,
           style: ElevatedButton.styleFrom(
             foregroundColor: Colors.white,
             backgroundColor: Colors.black,

@@ -32,7 +32,7 @@ class _ForwardchainingState extends State<Forwardchaining> {
 
   Future<void> diagnoseKoi() async {
     final response = await http.post(
-      Uri.parse('http://127.0.0.1:5001/diagnosa'),
+      Uri.parse('http://127.0.0.1:5001/diagnosaforward'),
       headers: {'Content-Type': 'application/json'},
       body: json.encode({'gejala': symptoms}),
     );
@@ -121,10 +121,4 @@ class _ForwardchainingState extends State<Forwardchaining> {
       ),
     );
   }
-}
-
-void main() {
-  runApp(const MaterialApp(
-    home: Forwardchaining(),
-  ));
 }
