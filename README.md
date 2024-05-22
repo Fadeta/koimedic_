@@ -1,6 +1,6 @@
 # koimedic_
 
-A new Flutter project.
+Aplikasi Diagnosa Penyakit Ikan Koi
 
 ## Getting Started
 
