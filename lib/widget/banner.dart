@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:koimedic/screens/menu/detailpage.dart';
+import 'package:koimedic/widget/detailpenyakit.dart';
 
 class Bannerpage extends StatelessWidget {
   const Bannerpage({Key? key});
@@ -32,24 +35,23 @@ class Bannerpage extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 30),
-                  Container(
-                    height: 26,
-                    width: 100,
-                    decoration: BoxDecoration(
-                      color: Colors.black,
-                      borderRadius: BorderRadius.circular(12),
+                  ElevatedButton(
+                    onPressed: () {
+                      Get.to(Detailpenyakit());
+                    },
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: Colors.white,
+                      backgroundColor: Colors.black,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      minimumSize: const Size(100, 26),
                     ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          "Learn More",
-                          style: GoogleFonts.poppins(
-                            fontSize: 12,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ],
+                    child: Text(
+                      "Learn More",
+                      style: GoogleFonts.poppins(
+                        fontSize: 12,
+                      ),
                     ),
                   ),
                 ],
