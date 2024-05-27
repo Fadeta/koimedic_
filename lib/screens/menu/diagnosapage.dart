@@ -1,4 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:intl/intl.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -6,7 +8,6 @@ import 'package:koimedic/screens/dashboard.dart';
 import 'package:koimedic/screens/diagnosa/diagnosamodel.dart';
 import 'package:koimedic/screens/fade_animation.dart';
 import 'package:koimedic/widget/common.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class Diagnosapage extends StatefulWidget {
   const Diagnosapage({super.key});
@@ -21,21 +22,29 @@ class _DiagnosapageState extends State<Diagnosapage> {
   final jeniskoi = TextEditingController();
   final umur = TextEditingController();
 
-  Future<String> getEmail() async {
-    final prefs = await SharedPreferences.getInstance();
-    return prefs.getString('email') ?? '';
-  }
-
+  FirebaseAuth auth = FirebaseAuth.instance;
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-  datakoi() async {
-    final email = await getEmail();
-    await FirebaseFirestore.instance.collection('users').add({
-      'email': email,
-      'namakoi': namakoi.text,
-      'jeniskoi': jeniskoi.text,
-      'umur': umur.text,
-    });
+  Future<void> datakoi(String namakoi, String jeniskoi, String umur) async {
+    String uid = await auth.currentUser!.uid;
+
+    CollectionReference<Map<String, dynamic>> colDiagnosa =
+        await firestore.collection("users").doc(uid).collection("diagnosa");
+
+    QuerySnapshot<Map<String, dynamic>> snapDiagnosa = await colDiagnosa.get();
+
+    //print
+    DateTime now = DateTime.now();
+    String todayDocID = DateFormat.yMd().format(now).replaceAll("/", "-");
+
+    print(todayDocID);
+    if (snapDiagnosa.docs.length == 0) {
+      colDiagnosa.doc(todayDocID).set({
+        "namakoi": namakoi,
+        "jeniskoi": jeniskoi,
+        "umur": umur,
+      });
+    } else {}
   }
 
   @override
@@ -128,7 +137,7 @@ class _DiagnosapageState extends State<Diagnosapage> {
                   alignment: Alignment.bottomCenter,
                   child: ElevatedButton(
                     onPressed: () async {
-                      await datakoi();
+                      await datakoi(namakoi.text, jeniskoi.text, umur.text);
                       Get.to(const Diagnosamodel());
                     },
                     style: ElevatedButton.styleFrom(
