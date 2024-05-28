@@ -26,25 +26,39 @@ class _DiagnosapageState extends State<Diagnosapage> {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   Future<void> datakoi(String namakoi, String jeniskoi, String umur) async {
-    String uid = await auth.currentUser!.uid;
+    User? user = auth.currentUser;
+    if (user == null) {
+      print("User is not logged in");
+      return;
+    }
 
+    String uid = user.uid;
+
+    // Referensi ke koleksi diagnosa di dalam dokumen pengguna
     CollectionReference<Map<String, dynamic>> colDiagnosa =
-        await firestore.collection("users").doc(uid).collection("diagnosa");
+        firestore.collection("users").doc(uid).collection("diagnosa");
 
-    QuerySnapshot<Map<String, dynamic>> snapDiagnosa = await colDiagnosa.get();
-
-    //print
+    // Mendapatkan tanggal saat ini dalam format yang diinginkan
     DateTime now = DateTime.now();
     String todayDocID = DateFormat.yMd().format(now).replaceAll("/", "-");
 
-    print(todayDocID);
-    if (snapDiagnosa.docs.length == 0) {
-      colDiagnosa.doc(todayDocID).set({
+    // Referensi ke dokumen diagnosa untuk hari ini
+    DocumentReference<Map<String, dynamic>> docRef =
+        colDiagnosa.doc(todayDocID);
+    DocumentSnapshot<Map<String, dynamic>> docSnapshot = await docRef.get();
+
+    if (!docSnapshot.exists) {
+      // Jika dokumen belum ada, buat dokumen baru dengan data yang diberikan
+      await docRef.set({
         "namakoi": namakoi,
         "jeniskoi": jeniskoi,
         "umur": umur,
       });
-    } else {}
+    } else {
+      // Optional: Menangani kasus di mana dokumen sudah ada
+      print(
+          "Document for today already exists, additional logic can be implemented here.");
+    }
   }
 
   @override

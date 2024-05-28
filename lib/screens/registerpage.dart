@@ -24,16 +24,32 @@ class _RegisterpageState extends State<Registerpage> {
   FirebaseAuth auth = FirebaseAuth.instance;
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-  regist() async {
-    await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: email.text, password: password.text);
-    Get.to(const Loginpage());
+  Future<void> regist() async {
+    try {
+      // Buat pengguna baru dengan email dan password
+      UserCredential userCredential =
+          await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: email.text,
+        password: password.text,
+      );
 
-    await FirebaseFirestore.instance.collection('users').add({
-      'email': email.text,
-      'password': password.text,
-      'namafarm': namafarm.text,
-    });
+      // Ambil UID pengguna yang baru dibuat
+      String uid = userCredential.user!.uid;
+
+      // Tambahkan data pengguna ke koleksi 'users' dengan UID sebagai ID dokumen
+      await FirebaseFirestore.instance.collection('users').doc(uid).set({
+        'email': email.text,
+        'namafarm': namafarm.text,
+        // Jangan simpan password dalam bentuk plaintext di Firestore
+        // 'password': password.text, // Tidak disarankan
+      });
+
+      // Navigasi ke halaman login setelah pendaftaran selesai
+      Get.to(const Loginpage());
+    } catch (e) {
+      // Tangani kesalahan (misalnya tampilkan pesan kesalahan)
+      print('Failed to register user: $e');
+    }
   }
 
   @override

@@ -19,10 +19,43 @@ class _LoginpageState extends State<Loginpage> {
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
 
-  signIn() async {
-    await FirebaseAuth.instance
-        .signInWithEmailAndPassword(email: email.text, password: password.text);
-    Get.to(const Dashboard());
+  Future<void> signIn(BuildContext context) async {
+    if (email.text.isEmpty || password.text.isEmpty) {
+      // Menampilkan pesan error jika email atau password kosong
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please enter both email and password')),
+      );
+      return;
+    }
+
+    try {
+      // Tampilkan indikator pemuatan
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return const Center(child: CircularProgressIndicator());
+        },
+      );
+
+      // Proses login dengan email dan password
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: email.text,
+        password: password.text,
+      );
+
+      // Navigasi ke halaman dashboard setelah login berhasil
+      Get.offAll(const Dashboard());
+    } catch (e) {
+      // Menangani kesalahan selama proses login
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to sign in: $e')),
+      );
+    } finally {
+      if (Get.isDialogOpen ?? false) {
+        Get.back();
+      }
+    }
   }
 
   @override
@@ -121,9 +154,7 @@ class _LoginpageState extends State<Loginpage> {
                       Align(
                         alignment: Alignment.bottomCenter,
                         child: ElevatedButton(
-                          onPressed: () async {
-                            signIn();
-                          },
+                          onPressed: () => signIn(context),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.black,
                             shape: RoundedRectangleBorder(
