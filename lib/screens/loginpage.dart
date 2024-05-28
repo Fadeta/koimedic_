@@ -21,7 +21,6 @@ class _LoginpageState extends State<Loginpage> {
 
   Future<void> signIn(BuildContext context) async {
     if (email.text.isEmpty || password.text.isEmpty) {
-      // Menampilkan pesan error jika email atau password kosong
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Please enter both email and password')),
       );
@@ -29,7 +28,6 @@ class _LoginpageState extends State<Loginpage> {
     }
 
     try {
-      // Tampilkan indikator pemuatan
       showDialog(
         context: context,
         barrierDismissible: false,
@@ -38,16 +36,13 @@ class _LoginpageState extends State<Loginpage> {
         },
       );
 
-      // Proses login dengan email dan password
       await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: email.text,
         password: password.text,
       );
 
-      // Navigasi ke halaman dashboard setelah login berhasil
       Get.offAll(const Dashboard());
     } catch (e) {
-      // Menangani kesalahan selama proses login
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Failed to sign in: $e')),
       );

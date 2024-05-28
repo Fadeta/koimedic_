@@ -1,6 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+
+import 'package:intl/intl.dart';
 
 class Forwardchaining extends StatefulWidget {
   const Forwardchaining({super.key});
@@ -42,12 +46,36 @@ class _ForwardchainingState extends State<Forwardchaining> {
       setState(() {
         diagnosis = data['hasil_diagnosa'];
       });
+      await saveDiagnosisToFirestore(diagnosis);
       _showDiagnosisDialog(diagnosis);
     } else {
       setState(() {
         diagnosis = 'Failed to get diagnosis';
       });
       _showDiagnosisDialog(diagnosis);
+    }
+  }
+
+  Future<void> saveDiagnosisToFirestore(String diagnosis) async {
+    User? user = FirebaseAuth.instance.currentUser;
+
+    if (user != null) {
+      String uid = user.uid;
+
+      CollectionReference<Map<String, dynamic>> colDiagnosa = FirebaseFirestore
+          .instance
+          .collection("users")
+          .doc(uid)
+          .collection("diagnosa");
+
+      DateTime now = DateTime.now();
+      String todayDocID = DateFormat('yyyy-MM-dd').format(now);
+
+      await colDiagnosa.doc(todayDocID).set({
+        "gejala": symptoms,
+        "hasil_diagnosa": diagnosis,
+        "timestamp": now,
+      });
     }
   }
 
