@@ -1,11 +1,16 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'dart:convert';
+import 'package:koimedic/screens/models/koi_data.dart';
 
 const String baseUrl = 'http://127.0.0.1:5001';
 
 class BackwardChainingPage extends StatefulWidget {
-  const BackwardChainingPage({super.key});
+  final KoiData koiData;
+  const BackwardChainingPage({super.key, required this.koiData});
 
   @override
   State<BackwardChainingPage> createState() => _BackwardChainingPageState();
@@ -65,10 +70,44 @@ class _BackwardChainingPageState extends State<BackwardChainingPage> {
 
     if (response.statusCode == 200) {
       final result = json.decode(response.body);
+      await saveDiagnosisToFirestore(result);
       _showDiagnosisDialog(result);
     } else {
       // Handle error
       print('Failed to diagnose');
+    }
+  }
+
+  Future<void> saveDiagnosisToFirestore(Map<String, dynamic> result) async {
+    User? user = FirebaseAuth.instance.currentUser;
+
+    if (user != null) {
+      String uid = user.uid;
+
+      CollectionReference<Map<String, dynamic>> colDiagnosa = FirebaseFirestore
+          .instance
+          .collection("users")
+          .doc(uid)
+          .collection("diagnosa");
+
+      DateTime now = DateTime.now();
+      String todayDocID = DateFormat('yyyy-MM-dd_HH-mm-ss').format(now);
+
+      DocumentReference<Map<String, dynamic>> docRef =
+          colDiagnosa.doc(todayDocID);
+
+      await docRef.set({
+        "metode": "backward chaining",
+        "namakoi": widget.koiData.name,
+        "jeniskoi": widget.koiData.species,
+        "umur": widget.koiData.age,
+        "penyakit": result['disease'], // Use result here
+        "gejala": result['selected_symptoms'].join(', '), // Use result here
+        "akurasi": result['accuracy'], // Use result here
+        "timestamp": now,
+      }, SetOptions(merge: true));
+    } else {
+      print("User is not logged in");
     }
   }
 

@@ -3,11 +3,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-
 import 'package:intl/intl.dart';
+import 'package:koimedic/screens/models/koi_data.dart';
 
 class Forwardchaining extends StatefulWidget {
-  const Forwardchaining({super.key});
+  final KoiData koiData;
+  const Forwardchaining({super.key, required this.koiData});
 
   @override
   State<Forwardchaining> createState() => _ForwardchainingState();
@@ -46,7 +47,7 @@ class _ForwardchainingState extends State<Forwardchaining> {
       setState(() {
         diagnosis = data['hasil_diagnosa'];
       });
-      await saveDiagnosisToFirestore(diagnosis);
+      await saveDiagnosisToFirestore(diagnosis, symptoms.join(', '));
       _showDiagnosisDialog(diagnosis);
     } else {
       setState(() {
@@ -56,7 +57,8 @@ class _ForwardchainingState extends State<Forwardchaining> {
     }
   }
 
-  Future<void> saveDiagnosisToFirestore(String diagnosis) async {
+  Future<void> saveDiagnosisToFirestore(
+      String diagnosis, String symptoms) async {
     User? user = FirebaseAuth.instance.currentUser;
 
     if (user != null) {
@@ -69,13 +71,22 @@ class _ForwardchainingState extends State<Forwardchaining> {
           .collection("diagnosa");
 
       DateTime now = DateTime.now();
-      String todayDocID = DateFormat('yyyy-MM-dd').format(now);
+      String todayDocID = DateFormat('yyyy-MM-dd_HH-mm-ss').format(now);
 
-      await colDiagnosa.doc(todayDocID).set({
+      DocumentReference<Map<String, dynamic>> docRef =
+          colDiagnosa.doc(todayDocID);
+
+      await docRef.set({
+        "metode": "forward chaining",
+        "namakoi": widget.koiData.name,
+        "jeniskoi": widget.koiData.species,
+        "umur": widget.koiData.age,
         "gejala": symptoms,
         "hasil_diagnosa": diagnosis,
         "timestamp": now,
-      });
+      }, SetOptions(merge: true));
+    } else {
+      print("User is not logged in");
     }
   }
 
