@@ -1,24 +1,41 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class Historypage extends StatefulWidget {
-  const Historypage({super.key});
+  const Historypage({Key? key});
 
   @override
   State<Historypage> createState() => _HistorypageState();
 }
 
 class _HistorypageState extends State<Historypage> {
-  final List<Map<String, String>> _diagnosisHistory = [];
+  late Stream<QuerySnapshot<Map<String, dynamic>>> _diagnosesStream;
 
-  void _addDiagnosis(String name, String type, String age, String result) {
-    setState(() {
-      _diagnosisHistory.add({
-        'name': name,
-        'type': type,
-        'age': age,
-        'result': result,
-      });
-    });
+  @override
+  void initState() {
+    super.initState();
+    _diagnosesStream = _loadDiagnosesFromFirestore();
+  }
+
+  Stream<QuerySnapshot<Map<String, dynamic>>> _loadDiagnosesFromFirestore() {
+    User? user = FirebaseAuth.instance.currentUser;
+
+    if (user != null) {
+      String uid = user.uid;
+
+      CollectionReference<Map<String, dynamic>> colDiagnoses = FirebaseFirestore
+          .instance
+          .collection("users")
+          .doc(uid)
+          .collection("diagnosa");
+
+      return colDiagnoses.snapshots();
+    } else {
+      print("User is not logged in");
+      // Return an empty stream if user is not logged in
+      return Stream.empty();
+    }
   }
 
   @override
@@ -34,42 +51,42 @@ class _HistorypageState extends State<Historypage> {
         ),
         backgroundColor: Colors.black,
       ),
-      body: _diagnosisHistory.isEmpty
-          ? const Center(
-              child: Text(
-                'No history available',
-                style: TextStyle(fontSize: 18),
-              ),
-            )
-          : ListView.builder(
-              itemCount: _diagnosisHistory.length,
-              itemBuilder: (context, index) {
-                final diagnosis = _diagnosisHistory[index];
-                return ListTile(
-                  leading: CircleAvatar(
-                    child: Text(diagnosis['name']![0]),
-                  ),
-                  title: Text(diagnosis['name']!),
-                  subtitle: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Jenis Koi: ${diagnosis['type']}'),
-                      Text('Umur: ${diagnosis['age']}'),
-                      Text('Hasil Diagnosa: ${diagnosis['result']}'),
-                    ],
-                  ),
-                );
-              },
-            ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          _addDiagnosis('Koi A', 'Kohaku', '2 tahun', 'White Spot');
+      body: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+        stream: _diagnosesStream,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return const Center(child: Text('Error loading data'));
+          } else {
+            final diagnoses = snapshot.data!.docs;
+            if (diagnoses.isEmpty) {
+              return const Center(child: Text('No history available'));
+            } else {
+              return ListView.builder(
+                itemCount: diagnoses.length,
+                itemBuilder: (context, index) {
+                  final diagnosis = diagnoses[index].data()!;
+                  return ListTile(
+                    leading: CircleAvatar(
+                      child: Text(diagnosis['namakoi']![0]),
+                    ),
+                    title: Text(diagnosis['namakoi']!),
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Jenis Koi: ${diagnosis['jeniskoi']}'),
+                        Text('Umur: ${diagnosis['umur']}'),
+                        Text(
+                            'Hasil Diagnosa: ${diagnosis['hasil_diagnosa'] ?? diagnosis['penyakit']}')
+                      ],
+                    ),
+                  );
+                },
+              );
+            }
+          }
         },
-        backgroundColor: Colors.black,
-        child: const Icon(
-          Icons.add,
-          color: Colors.white,
-        ),
       ),
     );
   }
