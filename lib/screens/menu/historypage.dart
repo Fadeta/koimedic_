@@ -33,7 +33,6 @@ class _HistorypageState extends State<Historypage> {
       return colDiagnoses.snapshots();
     } else {
       print("User is not logged in");
-      // Return an empty stream if user is not logged in
       return Stream.empty();
     }
   }

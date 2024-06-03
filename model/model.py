@@ -53,8 +53,20 @@ def diagnosa_penyakit(koi):
     elif 'G1' in koi and 'G14' in koi and 'G15' in koi:
         return "Kutu Jangkar"
     else:
-        return "Penyakit ikan koi tidak ditemukan. Segera lakukan karantina untuk penyembuhan ikan koi anda!"
-
+        if 'G3' in koi:
+            return "Kemungkinan penyakit White Spot"
+        elif 'G4' in koi:
+            return "Kemungkinan penyakit Black Spot"
+        elif 'G5' in koi or 'G6' in koi or 'G7' in koi:
+            return "Kemungkinan penyakit Cloudy Eyes"
+        elif 'G12' in koi or 'G13' in koi:
+            return "Kemungkinan penyakit Fin/Tail Rot"
+        elif 'G14' in koi:
+            return "Kemungkinan penyakit Kutu Jangkar"
+        elif 'G8' in koi or 'G9' in koi or 'G10' in koi or 'G11' in koi:
+            return "Kemungkinan penyakit Dropsy"
+        else:
+            return "Penyakit ikan koi tidak ditemukan. Segera lakukan karantina untuk penyembuhan ikan koi anda!"
 @app.route('/diseases', methods=['GET'])
 def get_diseases():
     return jsonify(list(gejalaPenyakit.keys()))
