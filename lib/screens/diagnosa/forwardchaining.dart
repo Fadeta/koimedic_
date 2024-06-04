@@ -34,6 +34,7 @@ class _ForwardchainingState extends State<Forwardchaining> {
     'Sering menggesekkan tubuh pada dinding': 'G15',
   };
   String diagnosis = '';
+  String treatment = '';
 
   Future<void> diagnoseKoi() async {
     final response = await http.post(
@@ -44,16 +45,22 @@ class _ForwardchainingState extends State<Forwardchaining> {
 
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
+      final diagnosis = data['hasil_diagnosa'];
+      final treatment = data['treatment'];
+
       setState(() {
-        diagnosis = data['hasil_diagnosa'];
+        this.diagnosis = diagnosis;
+        this.treatment = treatment;
       });
+
       await saveDiagnosisToFirestore(diagnosis, symptoms.join(', '));
-      _showDiagnosisDialog(diagnosis);
+      _showDiagnosisDialog(diagnosis, treatment);
     } else {
       setState(() {
         diagnosis = 'Failed to get diagnosis';
+        treatment = '';
       });
-      _showDiagnosisDialog(diagnosis);
+      _showDiagnosisDialog(diagnosis, treatment);
     }
   }
 
@@ -90,7 +97,7 @@ class _ForwardchainingState extends State<Forwardchaining> {
     }
   }
 
-  void _showDiagnosisDialog(String diagnosis) {
+  void _showDiagnosisDialog(String diagnosis, String treatment) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -104,12 +111,25 @@ class _ForwardchainingState extends State<Forwardchaining> {
               ),
             ),
           ),
-          content: Text(
-            diagnosis,
-            style: const TextStyle(
-              fontFamily: "Urbanist",
-              fontWeight: FontWeight.w500,
-            ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                'Diagnosis: $diagnosis',
+                style: const TextStyle(
+                  fontFamily: "Urbanist",
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              const SizedBox(height: 10),
+              Text(
+                'Treatment: $treatment',
+                style: const TextStyle(
+                  fontFamily: "Urbanist",
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ],
           ),
           actions: <Widget>[
             TextButton(
@@ -146,7 +166,7 @@ class _ForwardchainingState extends State<Forwardchaining> {
               value: symptoms.contains(_symptoms[key]),
               onChanged: (bool? value) {
                 setState(() {
-                  if (value!) {
+                  if (value == true) {
                     symptoms.add(_symptoms[key]!);
                   } else {
                     symptoms.remove(_symptoms[key]!);

@@ -104,6 +104,7 @@ class _BackwardChainingPageState extends State<BackwardChainingPage> {
         "penyakit": result['disease'], // Use result here
         "gejala": result['selected_symptoms'].join(', '), // Use result here
         "akurasi": result['accuracy'], // Use result here
+        "treatment": result['treatment'], // Use result here
         "timestamp": now,
       }, SetOptions(merge: true));
     } else {
@@ -134,14 +135,41 @@ class _BackwardChainingPageState extends State<BackwardChainingPage> {
               ),
             ),
           ),
-          content: Text(
-            'Penyakit yang dipilih:\n ${result['disease']}\n'
-            'Gejala-gejala yang dipilih:\n ${result['selected_symptoms'].join(', ')}\n'
-            'Akurasi:\n ${result['accuracy']}',
-            style: const TextStyle(
-              fontFamily: "Urbanist",
-              fontWeight: FontWeight.w500,
-            ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                'Penyakit yang dipilih: ${result['disease']}',
+                style: const TextStyle(
+                  fontFamily: "Urbanist",
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              const SizedBox(height: 10),
+              Text(
+                'Gejala-gejala yang dipilih: ${result['selected_symptoms'].join(', ')}',
+                style: const TextStyle(
+                  fontFamily: "Urbanist",
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              const SizedBox(height: 10),
+              Text(
+                'Akurasi: ${result['accuracy']}',
+                style: const TextStyle(
+                  fontFamily: "Urbanist",
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              const SizedBox(height: 10),
+              Text(
+                'Treatment: ${result['treatment']}',
+                style: const TextStyle(
+                  fontFamily: "Urbanist",
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ],
           ),
           actions: <Widget>[
             TextButton(
