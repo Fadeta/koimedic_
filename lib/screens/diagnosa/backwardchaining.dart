@@ -6,7 +6,7 @@ import 'package:intl/intl.dart';
 import 'dart:convert';
 import 'package:koimedic/screens/models/koi_data.dart';
 
-const String baseUrl = 'http://127.0.0.1:5001';
+const String baseUrl = 'https://deploykoimedic-59755e52928d.herokuapp.com/';
 
 class BackwardChainingPage extends StatefulWidget {
   final KoiData koiData;

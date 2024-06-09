@@ -38,7 +38,8 @@ class _ForwardchainingState extends State<Forwardchaining> {
 
   Future<void> diagnoseKoi() async {
     final response = await http.post(
-      Uri.parse('http://127.0.0.1:5001/diagnosaforward'),
+      Uri.parse(
+          'https://deploykoimedic-59755e52928d.herokuapp.com/diagnosaforward'),
       headers: {'Content-Type': 'application/json'},
       body: json.encode({'gejala': symptoms}),
     );
