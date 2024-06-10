@@ -6,12 +6,12 @@ CORS(app)
 
 diseases = ['White Spot', 'Black Spot', 'Cloudy Eyes', 'Dropsy', 'Fin/Tail Rot', 'Kutu Jangkar']
 symptoms = {
-    'White Spot': ['Terdapat bintik-bintik putih pada tubuh ikan', 'Menggosokkan tubuh ke benda keras', 'Kesulitan bernapas'],
-    'Black Spot': ['Terdapat bintik-bintik hitam pada tubuh ikan', 'Lemas atau menurunnya kekebalan tubuh', 'Produksi lendir berlebih'],
-    'Cloudy Eyes': ['Mata berkabut', 'Menggosokkan mata ke benda keras', 'Kesulitan dalam berenang'],
-    'Dropsy': ['Perut membengkak', 'Sisik berdiri seperti nanas', 'Mata menonjol'],
-    'Fin/Tail Rot': ['Sirip dan ekor membusuk', 'Tulang sirip dan ekor buram', 'Lapisan putih pada kulit'],
-    'Kutu Jangkar': ['Terdapat cacing yang menempel pada tubuh', 'Sering menggesekkan tubuh pada dinding', 'Lemas atau menurunnya kekebalan tubuh']
+    'White Spot': ['G1', 'G2', 'G3'],
+    'Black Spot': ['G1', 'G2', 'G4'],
+    'Cloudy Eyes': ['G5', 'G6', 'G7'],
+    'Dropsy': ['G8', 'G9', 'G10', 'G11'],
+    'Fin/Tail Rot': ['G1', 'G12', 'G13'],
+    'Kutu Jangkar': ['G1', 'G14', 'G15']
 }
 treatments = {
     'White Spot': 'Gunakan obat anti-parasit yang mengandung formalin atau malachite green.',
@@ -23,21 +23,25 @@ treatments = {
 }
 
 gejala_mapping = {
-    'G1': 'Terdapat bintik-bintik putih pada tubuh ikan',
-    'G2': 'Menggosokkan tubuh ke benda keras',
-    'G3': 'Kesulitan bernapas',
+    'G1': 'Menurunnya kekebalan tubuh atau lemas',
+    'G2': 'Badan ikan kurus',
+    'G3': 'Terdapat bintik-bintik putih pada tubuh ikan',
     'G4': 'Terdapat bintik-bintik hitam pada tubuh ikan',
     'G5': 'Mata berkabut',
-    'G6': 'Menggosokkan mata ke benda keras',
-    'G7': 'Kesulitan dalam berenang',
-    'G8': 'Perut membengkak',
-    'G9': 'Sisik berdiri seperti nanas',
-    'G10': 'Mata menonjol',
-    'G11': 'Lemas atau menurunnya kekebalan tubuh',
-    'G12': 'Sirip dan ekor membusuk',
+    'G6': 'Produksi lendir berlebih',
+    'G7': 'Mata menonjol',
+    'G8': 'Badan gembur',
+    'G9': 'Perut membengkak',
+    'G10': 'Kesulitan dalam berenang',
+    'G11': 'Sisik nanas atau mulai menanggal dari badan ikan',
+    'G12': 'Sirip dan ekor mulai membusuk',
     'G13': 'Tulang sirip dan ekor buram',
     'G14': 'Terdapat cacing yang menempel pada tubuh',
     'G15': 'Sering menggesekkan tubuh pada dinding'
+}
+
+bobot_gejala = {
+    'G1': 1.0, 'G2': 1.0, 'G3': 1.5, 'G4': 1.5, 'G5': 1.5, 'G6': 1.5, 'G7': 1.5, 'G8': 1.5, 'G9': 1.5, 'G10': 1.0, 'G11': 1.5, 'G12': 1.5, 'G13': 1.5, 'G14': 1.5, 'G15': 1.5
 }
 
 def diagnosa_penyakit(koi):
@@ -91,15 +95,24 @@ def get_treatment():
 @app.route('/diagnosabackward', methods=['POST'])
 def diagnose():
     data = request.get_json()
+    
+    if not data:
+        return jsonify({"error": "Input tidak boleh kosong"}), 400
+
     selected_disease = data.get('disease')
     selected_symptoms = data.get('symptoms', [])
     
     if not selected_disease or selected_disease not in symptoms:
-        return jsonify({"error": "Invalid disease selected"}), 400
+        return jsonify({"error": "Penyakit yang dipilih tidak valid atau kosong"}), 400
+    
+    if not selected_symptoms:
+        return jsonify({"error": "Gejala tidak boleh kosong"}), 400
 
-    total_symptoms = len(symptoms[selected_disease])
-    matched_symptoms = len([symptom for symptom in selected_symptoms if symptom in symptoms[selected_disease]])
-    accuracy = (matched_symptoms / total_symptoms) * 100 if total_symptoms > 0 else 0
+    total_weight = sum(bobot_gejala[gejala] for gejala in symptoms[selected_disease] if gejala in bobot_gejala)
+    
+    matched_weight = sum(bobot_gejala[gejala] for gejala in selected_symptoms if gejala in symptoms[selected_disease] and gejala in bobot_gejala)
+    
+    accuracy = (matched_weight / total_weight) * 100 if total_weight > 0 else 0
     
     return jsonify({
         "disease": selected_disease,
@@ -111,7 +124,15 @@ def diagnose():
 @app.route('/diagnosaforward', methods=['POST'])
 def diagnosa():
     data = request.json
+    
+    if not data:
+        return jsonify({"error": "Input tidak boleh kosong"}), 400
+
     gejala = data.get('gejala', [])
+    
+    if not gejala:
+        return jsonify({"error": "Gejala tidak boleh kosong"}), 400
+
     hasil, treatment = diagnosa_penyakit(gejala)
     return jsonify({
         "hasil_diagnosa": hasil,
