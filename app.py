@@ -45,34 +45,34 @@ bobot_gejala = {
 }
 
 def diagnosa_penyakit(koi):
-    koi_symptoms = [gejala_mapping[gejala] for gejala in koi if gejala in gejala_mapping]
-    if all(symptom in koi_symptoms for symptom in symptoms['White Spot']):
+    if all(symptom in koi for symptom in symptoms['White Spot']):
         return "White Spot", treatments['White Spot']
-    elif all(symptom in koi_symptoms for symptom in symptoms['Black Spot']):
+    elif all(symptom in koi for symptom in symptoms['Black Spot']):
         return "Black Spot", treatments['Black Spot']
-    elif all(symptom in koi_symptoms for symptom in symptoms['Cloudy Eyes']):
+    elif all(symptom in koi for symptom in symptoms['Cloudy Eyes']):
         return "Cloudy Eyes", treatments['Cloudy Eyes']
-    elif all(symptom in koi_symptoms for symptom in symptoms['Dropsy']):
+    elif all(symptom in koi for symptom in symptoms['Dropsy']):
         return "Dropsy", treatments['Dropsy']
-    elif all(symptom in koi_symptoms for symptom in symptoms['Fin/Tail Rot']):
+    elif all(symptom in koi for symptom in symptoms['Fin/Tail Rot']):
         return "Fin/Tail Rot", treatments['Fin/Tail Rot']
-    elif all(symptom in koi_symptoms for symptom in symptoms['Kutu Jangkar']):
+    elif all(symptom in koi for symptom in symptoms['Kutu Jangkar']):
         return "Kutu Jangkar", treatments['Kutu Jangkar']
     else:
-        if any(symptom in koi_symptoms for symptom in symptoms['White Spot']):
+        if any(symptom in koi for symptom in symptoms['White Spot']):
             return "Kemungkinan penyakit White Spot", treatments['White Spot']
-        elif any(symptom in koi_symptoms for symptom in symptoms['Black Spot']):
+        elif any(symptom in koi for symptom in symptoms['Black Spot']):
             return "Kemungkinan penyakit Black Spot", treatments['Black Spot']
-        elif any(symptom in koi_symptoms for symptom in symptoms['Cloudy Eyes']):
+        elif any(symptom in koi for symptom in symptoms['Cloudy Eyes']):
             return "Kemungkinan penyakit Cloudy Eyes", treatments['Cloudy Eyes']
-        elif any(symptom in koi_symptoms for symptom in symptoms['Fin/Tail Rot']):
+        elif any(symptom in koi for symptom in symptoms['Fin/Tail Rot']):
             return "Kemungkinan penyakit Fin/Tail Rot", treatments['Fin/Tail Rot']
-        elif any(symptom in koi_symptoms for symptom in symptoms['Kutu Jangkar']):
+        elif any(symptom in koi for symptom in symptoms['Kutu Jangkar']):
             return "Kemungkinan penyakit Kutu Jangkar", treatments['Kutu Jangkar']
-        elif any(symptom in koi_symptoms for symptom in symptoms['Dropsy']):
+        elif any(symptom in koi for symptom in symptoms['Dropsy']):
             return "Kemungkinan penyakit Dropsy", treatments['Dropsy']
         else:
             return "Penyakit ikan koi tidak ditemukan. Segera lakukan karantina untuk penyembuhan ikan koi anda!", "Karantina dan konsultasi dengan ahli."
+
 
 @app.route('/diseases', methods=['GET'])
 def get_diseases():
