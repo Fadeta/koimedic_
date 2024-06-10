@@ -82,7 +82,7 @@ def get_diseases():
 def get_symptoms():
     disease = request.args.get('disease')
     if disease in symptoms:
-        return jsonify(symptoms[disease])
+        return jsonify([gejala_mapping[gejala] for gejala in symptoms[disease]])
     return jsonify([])
 
 @app.route('/treatment', methods=['GET'])
@@ -114,9 +114,11 @@ def diagnose():
     
     accuracy = (matched_weight / total_weight) * 100 if total_weight > 0 else 0
     
+    selected_symptoms_desc = [gejala_mapping[gejala] for gejala in selected_symptoms if gejala in gejala_mapping]
+
     return jsonify({
         "disease": selected_disease,
-        "selected_symptoms": selected_symptoms,
+        "selected_symptoms": selected_symptoms_desc,
         "accuracy": f"{accuracy:.2f}%",
         "treatment": treatments[selected_disease]
     })
