@@ -77,6 +77,7 @@ class _BackwardChainingPageState extends State<BackwardChainingPage> {
 
     if (response.statusCode == 200) {
       final result = json.decode(response.body);
+      print('Diagnosis Result: $result'); // Add this line
       await saveDiagnosisToFirestore(result);
       _showDiagnosisDialog(result);
     } else {
