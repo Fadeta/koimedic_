@@ -8,6 +8,24 @@ import 'package:koimedic/screens/models/koi_data.dart';
 
 const String baseUrl = 'https://deploykoimedic-59755e52928d.herokuapp.com/';
 
+const Map<String, String> gejalaMapping = {
+  'G1': 'Menurunnya kekebalan tubuh atau lemas',
+  'G2': 'Badan ikan kurus',
+  'G3': 'Terdapat bintik-bintik putih pada tubuh ikan',
+  'G4': 'Terdapat bintik-bintik hitam pada tubuh ikan',
+  'G5': 'Mata berkabut',
+  'G6': 'Produksi lendir berlebih',
+  'G7': 'Mata menonjol',
+  'G8': 'Badan gembur',
+  'G9': 'Perut membengkak',
+  'G10': 'Kesulitan dalam berenang',
+  'G11': 'Sisik nanas atau mulai menanggal dari badan ikan',
+  'G12': 'Sirip dan ekor mulai membusuk',
+  'G13': 'Tulang sirip dan ekor buram',
+  'G14': 'Terdapat cacing yang menempel pada tubuh',
+  'G15': 'Sering menggesekkan tubuh pada dinding'
+};
+
 class BackwardChainingPage extends StatefulWidget {
   final KoiData koiData;
   const BackwardChainingPage({super.key, required this.koiData});
@@ -35,7 +53,6 @@ class _BackwardChainingPageState extends State<BackwardChainingPage> {
         diseases = List<String>.from(json.decode(response.body));
       });
     } else {
-      // Handle error
       print('Failed to load diseases');
     }
   }
@@ -44,12 +61,14 @@ class _BackwardChainingPageState extends State<BackwardChainingPage> {
     final response =
         await http.get(Uri.parse('$baseUrl/symptoms?disease=$disease'));
     if (response.statusCode == 200) {
+      List<String> symptomsData = List<String>.from(json.decode(response.body));
       setState(() {
-        symptoms = List<String>.from(json.decode(response.body));
+        symptoms = symptomsData
+            .map((symptom) => gejalaMapping[symptom] ?? symptom)
+            .toList();
         symptomSelection = {for (var symptom in symptoms) symptom: false};
       });
     } else {
-      // Handle error
       print('Failed to load symptoms');
     }
   }
@@ -60,15 +79,21 @@ class _BackwardChainingPageState extends State<BackwardChainingPage> {
         .map((entry) => entry.key)
         .toList();
 
+    final selectedSymptomCodes = selectedSymptoms.map((symptom) {
+      return gejalaMapping.entries
+          .firstWhere((entry) => entry.value == symptom)
+          .key;
+    }).toList();
+
     print('Selected Disease: $selectedDisease');
-    print('Selected Symptoms: $selectedSymptoms');
+    print('Selected Symptoms: $selectedSymptomCodes');
 
     final response = await http.post(
       Uri.parse('$baseUrl/diagnosabackward'),
       headers: {'Content-Type': 'application/json'},
       body: json.encode({
         'disease': selectedDisease,
-        'symptoms': selectedSymptoms,
+        'symptoms': selectedSymptomCodes,
       }),
     );
 
@@ -77,11 +102,10 @@ class _BackwardChainingPageState extends State<BackwardChainingPage> {
 
     if (response.statusCode == 200) {
       final result = json.decode(response.body);
-      print('Diagnosis Result: $result'); // Add this line
+      print('Diagnosis Result: $result');
       await saveDiagnosisToFirestore(result);
       _showDiagnosisDialog(result);
     } else {
-      // Handle error
       print('Failed to diagnose');
     }
   }
