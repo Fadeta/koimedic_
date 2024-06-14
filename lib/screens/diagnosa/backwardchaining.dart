@@ -59,6 +59,10 @@ class _BackwardChainingPageState extends State<BackwardChainingPage> {
         .where((entry) => entry.value)
         .map((entry) => entry.key)
         .toList();
+
+    print('Selected Disease: $selectedDisease');
+    print('Selected Symptoms: $selectedSymptoms');
+
     final response = await http.post(
       Uri.parse('$baseUrl/diagnosabackward'),
       headers: {'Content-Type': 'application/json'},
@@ -67,6 +71,9 @@ class _BackwardChainingPageState extends State<BackwardChainingPage> {
         'symptoms': selectedSymptoms,
       }),
     );
+
+    print('Response status: ${response.statusCode}');
+    print('Response body: ${response.body}');
 
     if (response.statusCode == 200) {
       final result = json.decode(response.body);
@@ -101,10 +108,10 @@ class _BackwardChainingPageState extends State<BackwardChainingPage> {
         "namakoi": widget.koiData.name,
         "jeniskoi": widget.koiData.species,
         "umur": widget.koiData.age,
-        "penyakit": result['disease'], // Use result here
-        "gejala": result['selected_symptoms'].join(', '), // Use result here
-        "akurasi": result['accuracy'], // Use result here
-        "treatment": result['treatment'], // Use result here
+        "penyakit": result['disease'],
+        "gejala": result['selected_symptoms'].join(', '),
+        "akurasi": result['accuracy'],
+        "treatment": result['treatment'],
         "timestamp": now,
       }, SetOptions(merge: true));
     } else {
