@@ -95,7 +95,8 @@ def get_treatment():
 @app.route('/diagnosabackward', methods=['POST'])
 def diagnose():
     data = request.get_json()
-    
+    print("Received data:", data) 
+
     if not data:
         return jsonify({"error": "Input tidak boleh kosong"}), 400
 
@@ -107,10 +108,17 @@ def diagnose():
     if not selected_symptoms:
         return jsonify({"error": "Gejala tidak boleh kosong"}), 400
 
+    print("Selected Disease:", selected_disease) 
+    print("Selected Symptoms:", selected_symptoms) 
+
     total_weight = sum(bobot_gejala[gejala] for gejala in symptoms[selected_disease] if gejala in bobot_gejala)
     matched_weight = sum(bobot_gejala[gejala] for gejala in selected_symptoms if gejala in symptoms[selected_disease] and gejala in bobot_gejala)
     accuracy = (matched_weight / total_weight) * 100 if total_weight > 0 else 0
     selected_symptoms_desc = [gejala_mapping[gejala] for gejala in selected_symptoms if gejala in gejala_mapping]
+
+    print("Total Weight:", total_weight) 
+    print("Matched Weight:", matched_weight) 
+    print("Accuracy:", accuracy) 
 
     return jsonify({
         "disease": selected_disease,
@@ -118,6 +126,7 @@ def diagnose():
         "accuracy": f"{accuracy:.2f}%",
         "treatment": treatments[selected_disease]
     })
+
 
 @app.route('/diagnosaforward', methods=['POST'])
 def diagnosa():
