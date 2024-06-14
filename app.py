@@ -104,16 +104,12 @@ def diagnose():
     
     if not selected_disease or selected_disease not in symptoms:
         return jsonify({"error": "Penyakit yang dipilih tidak valid atau kosong"}), 400
-    
     if not selected_symptoms:
         return jsonify({"error": "Gejala tidak boleh kosong"}), 400
 
     total_weight = sum(bobot_gejala[gejala] for gejala in symptoms[selected_disease] if gejala in bobot_gejala)
-    
     matched_weight = sum(bobot_gejala[gejala] for gejala in selected_symptoms if gejala in symptoms[selected_disease] and gejala in bobot_gejala)
-    
     accuracy = (matched_weight / total_weight) * 100 if total_weight > 0 else 0
-    
     selected_symptoms_desc = [gejala_mapping[gejala] for gejala in selected_symptoms if gejala in gejala_mapping]
 
     return jsonify({
