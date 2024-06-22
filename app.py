@@ -13,13 +13,14 @@ symptoms = {
     'Fin/Tail Rot': ['G1', 'G12', 'G13'],
     'Kutu Jangkar': ['G1', 'G14', 'G15']
 }
+
 treatments = {
-    'White Spot': 'Gunakan obat anti-parasit yang mengandung formalin atau malachite green.',
-    'Black Spot': 'Lakukan perawatan dengan menggunakan praziquantel atau trichlorfon.',
-    'Cloudy Eyes': 'Perbaiki kualitas air dan tambahkan antibiotik jika diperlukan.',
-    'Dropsy': 'Isolasi ikan yang terinfeksi dan berikan antibiotik seperti kanamycin.',
-    'Fin/Tail Rot': 'Gunakan antibiotik seperti erythromycin atau melakukan penggantian air yang lebih sering.',
-    'Kutu Jangkar': 'Gunakan obat anti-parasit yang mengandung diflubenzuron atau dimilin.'
+    'White Spot': 'Menaikkan suhu air: Tingkatkan suhu air secara perlahan hingga 28-30°C selama beberapa hari untuk mempercepat siklus hidup parasit.\nPenggunaan obat: Gunakan obat anti-parasit seperti malachite green atau formalin sesuai petunjuk dosis pada kemasan.\nKarantina: Pindahkan ikan yang terinfeksi ke tank karantina untuk menghindari penyebaran ke ikan lain.\nAerasi: Pastikan ada cukup oksigen dalam air karena peningkatan suhu dapat mengurangi kadar oksigen terlarut.',
+    'Black Spot': 'Penggunaan obat anti-parasit: Gunakan praziquantel atau metronidazole sesuai dosis yang dianjurkan.\nKarantina: Pisahkan ikan yang terinfeksi untuk mencegah penularan.\nMembersihkan kolam: Bersihkan kolam dan buang siput yang bisa menjadi inang perantara parasit.',
+    'Cloudy Eyes': 'Penggantian air: Lakukan penggantian air secara rutin untuk menjaga kualitas air.\nPenggunaan obat antibiotik: Jika disebabkan oleh infeksi bakteri, gunakan antibiotik seperti erythromycin atau tetracycline.\nPemberian makanan berkualitas: Pastikan ikan mendapatkan makanan yang kaya vitamin A untuk kesehatan mata.',
+    'Dropsy': 'Isolasi: Segera isolasi ikan yang terinfeksi, Pastikan bak air diberikan PK sepucuk jari, garam, heater, dan obat kuning.\nPenggunaan antibiotik: Berikan antibiotik seperti kanamycin atau metronidazole yang dicampur dalam makanan.\nPerbaikan kualitas air: Pastikan kondisi air bersih dan memiliki parameter yang sesuai.',
+    'Fin/Tail Rot': 'Penggunaan antiseptik: Oleskan antiseptik seperti betadine pada bagian yang terinfeksi.\nPenggunaan antibiotik: Berikan antibiotik dalam air atau makanan seperti amoxicillin atau tetracycline.\nPenggantian air: Pastikan air dalam kondisi bersih dan bebas dari polutan.',
+    'Kutu Jangkar': 'Pengangkatan manual: Gunakan pinset untuk mengangkat kutu jangkar dari tubuh ikan dengan hati-hati.\nPenggunaan antiparasit: Gunakan antiparasit seperti dimilin atau potassium permanganate sesuai dosis yang dianjurkan.\nKarantina: Pisahkan ikan yang terinfeksi dan obati dalam tank karantina.'
 }
 
 gejala_mapping = {
