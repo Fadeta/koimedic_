@@ -1,10 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:intl/intl.dart';
 import 'package:koimedic/screens/models/koi_data.dart';
+
+import '../dashboard.dart';
 
 class Forwardchaining extends StatefulWidget {
   final KoiData koiData;
@@ -135,7 +138,7 @@ class _ForwardchainingState extends State<Forwardchaining> {
           actions: <Widget>[
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop();
+                Get.offAll(() => const Dashboard());
               },
               child: const Text('OK'),
             ),

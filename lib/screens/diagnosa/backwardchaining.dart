@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
+import 'package:koimedic/screens/dashboard.dart';
 import 'dart:convert';
 import 'package:koimedic/screens/models/koi_data.dart';
 
@@ -206,7 +208,7 @@ class _BackwardChainingPageState extends State<BackwardChainingPage> {
           actions: <Widget>[
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop();
+                Get.offAll(() => const Dashboard());
               },
               child: const Text('OK'),
             ),

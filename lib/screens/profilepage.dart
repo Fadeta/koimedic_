@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:koimedic/screens/loginpage.dart';
 
 class Profilepage extends StatefulWidget {
@@ -12,18 +13,40 @@ class Profilepage extends StatefulWidget {
 
 class _ProfilepageState extends State<Profilepage> {
   final user = FirebaseAuth.instance.currentUser;
+  String farmName = 'Loading...';
+
+  @override
+  void initState() {
+    super.initState();
+    if (user != null) {
+      _fetchFarmName();
+    }
+  }
+
+  Future<void> _fetchFarmName() async {
+    try {
+      DocumentSnapshot farmData = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user!.uid)
+          .get();
+      setState(() {
+        farmName = farmData['namafarm'] ?? 'No Farm Name';
+      });
+    } catch (e) {
+      setState(() {
+        farmName = 'Error fetching name';
+      });
+    }
+  }
 
   Future<void> signOut() async {
     await FirebaseAuth.instance.signOut();
-    Get.to(const Loginpage());
+    Get.offAll(() => const Loginpage());
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Profile Page"),
-      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -38,9 +61,9 @@ class _ProfilepageState extends State<Profilepage> {
               ),
             ),
             const SizedBox(height: 20),
-            const Text(
-              "Astrokoi Farm",
-              style: TextStyle(
+            Text(
+              farmName,
+              style: const TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
                 fontFamily: "Urbanist-Bold",
@@ -50,6 +73,7 @@ class _ProfilepageState extends State<Profilepage> {
             Text(
               user != null ? user!.email ?? 'No Email' : 'Not Logged In',
               style: const TextStyle(
+                fontFamily: "Urbanist-Medium",
                 fontSize: 18,
                 color: Colors.black,
               ),
