@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:koimedic/screens/artikel.dart';
+import 'package:koimedic/screens/artikel_detail.dart';
 import 'package:koimedic/screens/menu/detailpage.dart';
 import 'package:koimedic/screens/menu/diagnosapage.dart';
 import 'package:koimedic/screens/menu/historypage.dart';
@@ -8,13 +10,15 @@ import 'package:koimedic/widget/banner.dart';
 import 'package:koimedic/widget/menu.dart';
 
 class Homepage extends StatefulWidget {
-  const Homepage({super.key});
+  Homepage({super.key});
 
   @override
   State<Homepage> createState() => _HomepageState();
 }
 
 class _HomepageState extends State<Homepage> {
+  final ArticleController articleController = Get.put(ArticleController());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -110,7 +114,31 @@ class _HomepageState extends State<Homepage> {
                   ),
                 ],
               ),
-            )
+            ),
+            Obx(() {
+              return ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: articleController.articles.length,
+                itemBuilder: (context, index) {
+                  final article = articleController.articles[index];
+                  return ListTile(
+                    leading: Image.network(article.imageUrl),
+                    title: Text(
+                      article.title,
+                      style: const TextStyle(
+                        fontFamily: "Urbanist-Bold",
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    onTap: () {
+                      Get.to(() => ArticleDetailPage(article: article));
+                    },
+                  );
+                },
+              );
+            }),
           ],
         ),
       ),
