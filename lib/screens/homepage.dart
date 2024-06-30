@@ -10,7 +10,7 @@ import 'package:koimedic/widget/banner.dart';
 import 'package:koimedic/widget/menu.dart';
 
 class Homepage extends StatefulWidget {
-  Homepage({super.key});
+  const Homepage({super.key});
 
   @override
   State<Homepage> createState() => _HomepageState();
@@ -122,19 +122,52 @@ class _HomepageState extends State<Homepage> {
                 itemCount: articleController.articles.length,
                 itemBuilder: (context, index) {
                   final article = articleController.articles[index];
-                  return ListTile(
-                    leading: Image.network(article.imageUrl),
-                    title: Text(
-                      article.title,
-                      style: const TextStyle(
-                        fontFamily: "Urbanist-Bold",
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 8.0, horizontal: 16.0),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(12),
+                        boxShadow: const [
+                          BoxShadow(
+                            color: Colors.black12,
+                            blurRadius: 4,
+                            offset: Offset(2, 2),
+                          ),
+                        ],
+                      ),
+                      child: ListTile(
+                        leading: ClipRRect(
+                          borderRadius: BorderRadius.circular(8.0),
+                          child: Image.network(
+                            article.imageUrl,
+                            width: 60,
+                            height: 60,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        title: Text(
+                          article.title,
+                          style: const TextStyle(
+                            fontFamily: "Urbanist-Bold",
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.black,
+                          ),
+                        ),
+                        subtitle: Text(
+                          "Read more...",
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.grey[600],
+                          ),
+                        ),
+                        onTap: () {
+                          Get.to(() => ArticleDetailPage(article: article));
+                        },
                       ),
                     ),
-                    onTap: () {
-                      Get.to(() => ArticleDetailPage(article: article));
-                    },
                   );
                 },
               );
