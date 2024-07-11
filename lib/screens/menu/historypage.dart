@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:koimedic/screens/menu/detailhistory.dart';
 
 class Historypage extends StatefulWidget {
   const Historypage({Key? key});
@@ -65,7 +66,8 @@ class _HistorypageState extends State<Historypage> {
               return ListView.builder(
                 itemCount: diagnoses.length,
                 itemBuilder: (context, index) {
-                  final diagnosis = diagnoses[index].data()!;
+                  final diagnosis = diagnoses[index].data();
+                  diagnosis['docId'] = diagnoses[index].id; // Add document ID
                   return ListTile(
                     leading: CircleAvatar(
                       child: Text(diagnosis['namakoi']![0]),
@@ -80,6 +82,15 @@ class _HistorypageState extends State<Historypage> {
                             'Hasil Diagnosa: ${diagnosis['hasil_diagnosa'] ?? diagnosis['penyakit']}')
                       ],
                     ),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              DetailHistory(diagnosis: diagnosis),
+                        ),
+                      );
+                    },
                   );
                 },
               );

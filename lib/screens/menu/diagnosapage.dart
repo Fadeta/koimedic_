@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:koimedic/screens/dashboard.dart';
 import 'package:koimedic/screens/diagnosa/diagnosamodel.dart';
-import 'package:koimedic/screens/diagnosa/forwardchaining.dart';
 import 'package:koimedic/screens/fade_animation.dart';
 import 'package:koimedic/screens/models/koi_data.dart';
 import 'package:koimedic/widget/common.dart';
