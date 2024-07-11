@@ -37,7 +37,7 @@ class _RegisterpageState extends State<Registerpage> {
       await FirebaseFirestore.instance.collection('users').doc(uid).set({
         'email': email.text,
         'namafarm': namafarm.text,
-        'password': password.text, 
+        'password': password.text,
       });
 
       Get.to(const Loginpage());
@@ -122,13 +122,22 @@ class _RegisterpageState extends State<Registerpage> {
                   controller: password,
                   decoration: InputDecoration(
                     hintText: 'Enter Password',
+                    hintStyle: Common().hinttext,
                     contentPadding: const EdgeInsets.all(18),
                     border: OutlineInputBorder(
                       borderSide: const BorderSide(color: Colors.black),
                       borderRadius: BorderRadius.circular(12),
                     ),
+                    suffixIcon: IconButton(
+                      onPressed: () {
+                        setState(() {
+                          flag = !flag;
+                        });
+                      },
+                      icon: const Icon(Icons.remove_red_eye_outlined),
+                    ),
                   ),
-                  obscureText: true,
+                  obscureText: flag,
                 ),
                 const SizedBox(
                   height: 15,
