@@ -94,6 +94,7 @@ class _ForwardchainingState extends State<Forwardchaining> {
         "umur": widget.koiData.age,
         "gejala": symptoms,
         "hasil_diagnosa": diagnosis,
+        "treatment": treatment,
         "timestamp": now,
       }, SetOptions(merge: true));
     } else {

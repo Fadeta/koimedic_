@@ -20,8 +20,7 @@ class _DetailHistoryState extends State<DetailHistory> {
     User? user = _auth.currentUser;
     if (user != null) {
       String uid = user.uid;
-      String docId =
-          widget.diagnosis['docId']; // Assuming you have docId in diagnosis map
+      String docId = widget.diagnosis['docId'];
 
       try {
         await _firestore
@@ -32,11 +31,11 @@ class _DetailHistoryState extends State<DetailHistory> {
             .update({'feedback': _feedbackController.text});
 
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Feedback saved successfully!')),
+          const SnackBar(content: Text('Ulasan berhasil disimpan!')),
         );
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to save feedback: $e')),
+          SnackBar(content: Text('Gagal memberikan ulasan: $e')),
         );
       }
     }
@@ -56,32 +55,48 @@ class _DetailHistoryState extends State<DetailHistory> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text('Nama Koi: ${widget.diagnosis['namakoi']}',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-              SizedBox(height: 10),
+                  style: const TextStyle(
+                      fontSize: 20, fontWeight: FontWeight.bold)),
+              const SizedBox(height: 10),
               Text('Jenis Koi: ${widget.diagnosis['jeniskoi']}',
-                  style: TextStyle(fontSize: 18)),
-              SizedBox(height: 10),
+                  style: const TextStyle(fontSize: 18)),
+              const SizedBox(height: 10),
               Text('Umur: ${widget.diagnosis['umur']}',
-                  style: TextStyle(fontSize: 18)),
-              SizedBox(height: 10),
+                  style: const TextStyle(fontSize: 18)),
+              const SizedBox(height: 10),
               Text(
                   'Hasil Diagnosa: ${widget.diagnosis['hasil_diagnosa'] ?? widget.diagnosis['penyakit']}',
-                  style: TextStyle(fontSize: 18)),
-              SizedBox(height: 20),
+                  style: const TextStyle(fontSize: 18)),
+              const SizedBox(height: 10),
+              Text('Akurasi: ${widget.diagnosis['akurasi']}',
+                  style: const TextStyle(fontSize: 18)),
+              const SizedBox(height: 10),
+              Text('Treatment: ${widget.diagnosis['treatment']}',
+                  style: const TextStyle(fontSize: 18)),
+              const SizedBox(height: 30),
               TextField(
                 controller: _feedbackController,
-                decoration: InputDecoration(
-                  labelText: 'Feedback',
+                decoration: const InputDecoration(
+                  labelText: 'Berikan Ulasanmu Disini!',
                   border: OutlineInputBorder(),
                 ),
                 maxLines: 4,
               ),
-              SizedBox(height: 10),
-              ElevatedButton(
-                onPressed: _saveFeedback,
-                child: Text('Save Feedback'),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.black,
+              const SizedBox(height: 20),
+              Center(
+                child: ElevatedButton(
+                  onPressed: _saveFeedback,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.black,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 50,
+                      vertical: 15,
+                    ),
+                  ),
+                  child: const Text(
+                    'Simpan',
+                    style: TextStyle(fontSize: 16),
+                  ),
                 ),
               ),
             ],
