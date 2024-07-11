@@ -110,7 +110,7 @@ class _DetailpageState extends State<Detailpage> {
                     children: [
                       Row(
                         children: [
-                          Icon(Icons.healing, color: Colors.green),
+                          Icon(Icons.healing, color: Colors.black),
                           SizedBox(width: 8),
                           Text(
                             '2. Diagnosa Berdasarkan Penyakit',
