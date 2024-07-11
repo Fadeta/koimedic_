@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
-import 'package:koimedic/screens/dashboard.dart';
+import 'package:koimedic/screens/menu/historypage.dart';
 import 'dart:convert';
 import 'package:koimedic/screens/models/koi_data.dart';
 
@@ -208,7 +208,7 @@ class _BackwardChainingPageState extends State<BackwardChainingPage> {
           actions: <Widget>[
             TextButton(
               onPressed: () {
-                Get.offAll(() => const Dashboard());
+                Get.offAll(() => const Historypage());
               },
               child: const Text('OK'),
             ),

@@ -5,9 +5,8 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:intl/intl.dart';
+import 'package:koimedic/screens/menu/historypage.dart';
 import 'package:koimedic/screens/models/koi_data.dart';
-
-import '../dashboard.dart';
 
 class Forwardchaining extends StatefulWidget {
   final KoiData koiData;
@@ -139,7 +138,7 @@ class _ForwardchainingState extends State<Forwardchaining> {
           actions: <Widget>[
             TextButton(
               onPressed: () {
-                Get.offAll(() => const Dashboard());
+                Get.offAll(() => const Historypage());
               },
               child: const Text('OK'),
             ),
