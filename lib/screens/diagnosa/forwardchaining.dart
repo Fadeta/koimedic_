@@ -37,6 +37,7 @@ class _ForwardchainingState extends State<Forwardchaining> {
   };
   String diagnosis = '';
   String treatment = '';
+  String cfPersen = '';
 
   Future<void> diagnoseKoi() async {
     final response = await http.post(
@@ -48,27 +49,30 @@ class _ForwardchainingState extends State<Forwardchaining> {
 
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
-      final diagnosis = data['hasil_diagnosa'];
+      final diagnosis = data['diagnosa'];
       final treatment = data['treatment'];
+      final cfPersen = data['cf_persen'];
 
       setState(() {
         this.diagnosis = diagnosis;
         this.treatment = treatment;
+        this.cfPersen = cfPersen;
       });
 
-      await saveDiagnosisToFirestore(diagnosis, symptoms.join(', '));
-      _showDiagnosisDialog(diagnosis, treatment);
+      await saveDiagnosisToFirestore(diagnosis, symptoms.join(', '), cfPersen);
+      _showDiagnosisDialog(diagnosis, treatment, cfPersen);
     } else {
       setState(() {
         diagnosis = 'Failed to get diagnosis';
         treatment = '';
+        cfPersen = '';
       });
-      _showDiagnosisDialog(diagnosis, treatment);
+      _showDiagnosisDialog(diagnosis, treatment, cfPersen);
     }
   }
 
   Future<void> saveDiagnosisToFirestore(
-      String diagnosis, String symptoms) async {
+      String diagnosis, String symptoms, String cfPersen) async {
     User? user = FirebaseAuth.instance.currentUser;
 
     if (user != null) {
@@ -93,6 +97,7 @@ class _ForwardchainingState extends State<Forwardchaining> {
         "umur": widget.koiData.age,
         "gejala": symptoms,
         "hasil_diagnosa": diagnosis,
+        "cf_persen": cfPersen,
         "treatment": treatment,
         "timestamp": now,
       }, SetOptions(merge: true));
@@ -101,7 +106,8 @@ class _ForwardchainingState extends State<Forwardchaining> {
     }
   }
 
-  void _showDiagnosisDialog(String diagnosis, String treatment) {
+  void _showDiagnosisDialog(
+      String diagnosis, String treatment, String cfPersen) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -120,6 +126,14 @@ class _ForwardchainingState extends State<Forwardchaining> {
             children: [
               Text(
                 'Diagnosis: $diagnosis',
+                style: const TextStyle(
+                  fontFamily: "Urbanist",
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              const SizedBox(height: 10),
+              Text(
+                'Akurasi: $cfPersen',
                 style: const TextStyle(
                   fontFamily: "Urbanist",
                   fontWeight: FontWeight.w500,
