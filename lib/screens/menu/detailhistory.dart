@@ -56,20 +56,22 @@ class _DetailHistoryState extends State<DetailHistory> {
             children: [
               Text('Nama Koi: ${widget.diagnosis['namakoi']}',
                   style: const TextStyle(
-                      fontSize: 20, fontWeight: FontWeight.bold)),
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: "Urbanist")),
               const SizedBox(height: 10),
               Text('Jenis Koi: ${widget.diagnosis['jeniskoi']}',
-                  style: const TextStyle(fontSize: 18)),
+                  style: const TextStyle(fontSize: 18, fontFamily: "Urbanist")),
               const SizedBox(height: 10),
               Text('Umur: ${widget.diagnosis['umur']}',
-                  style: const TextStyle(fontSize: 18)),
+                  style: const TextStyle(fontSize: 18, fontFamily: "Urbanist")),
               const SizedBox(height: 10),
               Text(
                   'Hasil Diagnosa: ${widget.diagnosis['hasil_diagnosa'] ?? widget.diagnosis['penyakit']}',
-                  style: const TextStyle(fontSize: 18)),
+                  style: const TextStyle(fontSize: 18, fontFamily: "Urbanist")),
               const SizedBox(height: 10),
               Text('Treatment: ${widget.diagnosis['treatment']}',
-                  style: const TextStyle(fontSize: 18)),
+                  style: const TextStyle(fontSize: 18, fontFamily: "Urbanist")),
               const SizedBox(height: 30),
               TextField(
                 controller: _feedbackController,
@@ -92,7 +94,10 @@ class _DetailHistoryState extends State<DetailHistory> {
                   ),
                   child: const Text(
                     'Simpan',
-                    style: TextStyle(fontSize: 16),
+                    style: TextStyle(
+                        fontSize: 16,
+                        fontFamily: "Urbanist",
+                        color: Colors.white),
                   ),
                 ),
               ),
