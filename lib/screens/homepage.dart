@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -17,7 +19,25 @@ class Homepage extends StatefulWidget {
 }
 
 class _HomepageState extends State<Homepage> {
+  final user = FirebaseAuth.instance.currentUser;
+  String farmName = 'Loading...';
   final ArticleController articleController = Get.put(ArticleController());
+
+  Future<void> _fetchFarmName() async {
+    try {
+      DocumentSnapshot farmData = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user!.uid)
+          .get();
+      setState(() {
+        farmName = farmData['namafarm'] ?? 'No Farm Name';
+      });
+    } catch (e) {
+      setState(() {
+        farmName = 'Error fetching name';
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,14 +60,14 @@ class _HomepageState extends State<Homepage> {
             ),
           ),
         ],
-        title: const Column(
+        title: Column(
           children: [
-            SizedBox(
+            const SizedBox(
               height: 40,
             ),
             Text(
-              "Hi, Astrokoi Farm \nMulai diagnosa ikan Koi anda!",
-              style: TextStyle(
+              "Hi, $farmName\nMulai diagnosa ikan Koi anda!",
+              style: const TextStyle(
                   color: Colors.black,
                   fontFamily: "Urbanist-Bold",
                   fontSize: 18,

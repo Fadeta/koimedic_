@@ -35,6 +35,7 @@ class _ForwardchainingState extends State<Forwardchaining> {
     'Terdapat cacing yang menempel pada tubuh': 'G14',
     'Sering menggesekkan tubuh pada dinding': 'G15',
   };
+
   String diagnosis = '';
   String treatment = '';
   String cfPersen = '';
@@ -49,7 +50,7 @@ class _ForwardchainingState extends State<Forwardchaining> {
 
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
-      final diagnosis = data['diagnosa'];
+      final diagnosis = data['hasil_diagnosa'];
       final treatment = data['treatment'];
       final cfPersen = data['cf_persen'];
 
