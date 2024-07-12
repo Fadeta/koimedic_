@@ -208,7 +208,7 @@ class _BackwardChainingPageState extends State<BackwardChainingPage> {
           actions: <Widget>[
             TextButton(
               onPressed: () {
-                Get.offAll(() => const Historypage());
+                Get.to(() => const Historypage());
               },
               child: const Text('OK'),
             ),

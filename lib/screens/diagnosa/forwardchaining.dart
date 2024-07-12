@@ -152,7 +152,7 @@ class _ForwardchainingState extends State<Forwardchaining> {
           actions: <Widget>[
             TextButton(
               onPressed: () {
-                Get.offAll(() => const Historypage());
+                Get.to(() => const Historypage());
               },
               child: const Text('OK'),
             ),
