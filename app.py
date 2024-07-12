@@ -42,38 +42,29 @@ gejala_mapping = {
 }
 
 bobot_gejala = {
-    'G1': 1.0, 'G2': 1.0, 'G3': 1.5, 'G4': 1.5, 'G5': 1.5, 'G6': 1.5, 'G7': 1.5, 'G8': 1.5, 'G9': 1.5, 'G10': 1.0, 'G11': 1.5, 'G12': 1.5, 'G13': 1.5, 'G14': 1.5, 'G15': 1.5
+    'G1': 0.6, 'G2': 0.7, 'G3': 0.9, 'G4': 0.8, 'G5': 0.7, 'G6': 0.8, 'G7': 0.7, 'G8': 0.9, 'G9': 0.9, 'G10': 0.6, 'G11': 0.9, 'G12': 0.8, 'G13': 0.7, 'G14': 0.8, 'G15': 0.7
 }
 
-def diagnosa_penyakit(koi):
-    if all(symptom in koi for symptom in symptoms['White Spot']):
-        return "White Spot", treatments['White Spot']
-    elif all(symptom in koi for symptom in symptoms['Black Spot']):
-        return "Black Spot", treatments['Black Spot']
-    elif all(symptom in koi for symptom in symptoms['Cloudy Eyes']):
-        return "Cloudy Eyes", treatments['Cloudy Eyes']
-    elif all(symptom in koi for symptom in symptoms['Dropsy']):
-        return "Dropsy", treatments['Dropsy']
-    elif all(symptom in koi for symptom in symptoms['Fin/Tail Rot']):
-        return "Fin/Tail Rot", treatments['Fin/Tail Rot']
-    elif all(symptom in koi for symptom in symptoms['Kutu Jangkar']):
-        return "Kutu Jangkar", treatments['Kutu Jangkar']
+def combine_cf(cf1, cf2):
+    if cf1 >= 0 and cf2 >= 0:
+        return cf1 + cf2 * (1 - cf1)
+    elif cf1 < 0 and cf2 < 0:
+        return cf1 + cf2 * (1 + cf1)
     else:
-        if any(symptom in koi for symptom in symptoms['White Spot']):
-            return "Kemungkinan penyakit White Spot", treatments['White Spot']
-        elif any(symptom in koi for symptom in symptoms['Black Spot']):
-            return "Kemungkinan penyakit Black Spot", treatments['Black Spot']
-        elif any(symptom in koi for symptom in symptoms['Cloudy Eyes']):
-            return "Kemungkinan penyakit Cloudy Eyes", treatments['Cloudy Eyes']
-        elif any(symptom in koi for symptom in symptoms['Fin/Tail Rot']):
-            return "Kemungkinan penyakit Fin/Tail Rot", treatments['Fin/Tail Rot']
-        elif any(symptom in koi for symptom in symptoms['Kutu Jangkar']):
-            return "Kemungkinan penyakit Kutu Jangkar", treatments['Kutu Jangkar']
-        elif any(symptom in koi for symptom in symptoms['Dropsy']):
-            return "Kemungkinan penyakit Dropsy", treatments['Dropsy']
-        else:
-            return "Penyakit ikan koi tidak ditemukan. Segera lakukan karantina untuk penyembuhan ikan koi anda!", "Karantina dan konsultasi dengan ahli."
+        return (cf1 + cf2) / (1 - min(abs(cf1), abs(cf2)))
 
+def diagnosa_penyakit_cf(gejala_cf):
+    disease_cf = {}
+    for disease, disease_symptoms in symptoms.items():
+        combined_cf = 0.0
+        for symptom in disease_symptoms:
+            if symptom in gejala_cf:
+                combined_cf = combine_cf(combined_cf, gejala_cf[symptom])
+        disease_cf[disease] = combined_cf
+
+    hasil_diagnosa = max(disease_cf, key=disease_cf.get)
+    cf_persen = disease_cf[hasil_diagnosa] * 100  # Mengonversi nilai CF menjadi persentase
+    return hasil_diagnosa, treatments[hasil_diagnosa], cf_persen
 
 @app.route('/diseases', methods=['GET'])
 def get_diseases():
@@ -96,8 +87,6 @@ def get_treatment():
 @app.route('/diagnosabackward', methods=['POST'])
 def diagnose():
     data = request.get_json()
-    print("Received data:", data) 
-
     if not data:
         return jsonify({"error": "Input tidak boleh kosong"}), 400
 
@@ -109,17 +98,10 @@ def diagnose():
     if not selected_symptoms:
         return jsonify({"error": "Gejala tidak boleh kosong"}), 400
 
-    print("Selected Disease:", selected_disease) 
-    print("Selected Symptoms:", selected_symptoms) 
-
     total_weight = sum(bobot_gejala[gejala] for gejala in symptoms[selected_disease] if gejala in bobot_gejala)
     matched_weight = sum(bobot_gejala[gejala] for gejala in selected_symptoms if gejala in symptoms[selected_disease] and gejala in bobot_gejala)
     accuracy = (matched_weight / total_weight) * 100 if total_weight > 0 else 0
     selected_symptoms_desc = [gejala_mapping[gejala] for gejala in selected_symptoms if gejala in gejala_mapping]
-
-    print("Total Weight:", total_weight) 
-    print("Matched Weight:", matched_weight) 
-    print("Accuracy:", accuracy) 
 
     return jsonify({
         "disease": selected_disease,
@@ -128,23 +110,22 @@ def diagnose():
         "treatment": treatments[selected_disease]
     })
 
-
 @app.route('/diagnosaforward', methods=['POST'])
 def diagnosa():
     data = request.json
-    
     if not data:
         return jsonify({"error": "Input tidak boleh kosong"}), 400
 
     gejala = data.get('gejala', [])
-    
     if not gejala:
         return jsonify({"error": "Gejala tidak boleh kosong"}), 400
 
-    hasil, treatment = diagnosa_penyakit(gejala)
+    gejala_cf = {symptom: bobot_gejala[symptom] for symptom in gejala if symptom in bobot_gejala}
+    hasil, treatment, cf_persen = diagnosa_penyakit_cf(gejala_cf)
     return jsonify({
         "hasil_diagnosa": hasil,
-        "treatment": treatment
+        "treatment": treatment,
+        "certainty_factor": f"{cf_persen:.2f}%"
     })
 
 if __name__ == '__main__':
