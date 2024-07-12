@@ -63,7 +63,7 @@ def diagnosa_penyakit_cf(gejala_cf):
         disease_cf[disease] = combined_cf
 
     hasil_diagnosa = max(disease_cf, key=disease_cf.get)
-    cf_persen = disease_cf[hasil_diagnosa] * 100  # Mengonversi nilai CF menjadi persentase
+    cf_persen = disease_cf[hasil_diagnosa] * 100
     return hasil_diagnosa, treatments[hasil_diagnosa], cf_persen
 
 @app.route('/diseases', methods=['GET'])
@@ -125,7 +125,7 @@ def diagnosa():
     return jsonify({
         "hasil_diagnosa": hasil,
         "treatment": treatment,
-        "certainty_factor": f"{cf_persen:.2f}%"
+        "certainly_factor": f"{cf_persen:.2f}%"
     })
 
 if __name__ == '__main__':
