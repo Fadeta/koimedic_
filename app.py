@@ -125,7 +125,7 @@ def diagnosa():
     return jsonify({
         "hasil_diagnosa": hasil,
         "treatment": treatment,
-        "certainly_factor": f"{cf_persen:.2f}%"
+        "cf_persen": f"{cf_persen:.2f}%"
     })
 
 if __name__ == '__main__':
