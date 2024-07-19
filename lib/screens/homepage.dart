@@ -23,6 +23,14 @@ class _HomepageState extends State<Homepage> {
   String farmName = 'Loading...';
   final ArticleController articleController = Get.put(ArticleController());
 
+  @override
+  void initState() {
+    super.initState();
+    if (user != null) {
+      _fetchFarmName();
+    }
+  }
+
   Future<void> _fetchFarmName() async {
     try {
       DocumentSnapshot farmData = await FirebaseFirestore.instance
@@ -66,7 +74,7 @@ class _HomepageState extends State<Homepage> {
               height: 40,
             ),
             Text(
-              "Hi, $farmName\nMulai diagnosa ikan Koi anda!",
+              "Hi, $farmName \nMulai diagnosa ikan Koi anda!",
               style: const TextStyle(
                   color: Colors.black,
                   fontFamily: "Urbanist-Bold",
