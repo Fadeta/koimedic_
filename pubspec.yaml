@@ -40,6 +40,12 @@ flutter:
     - assets/images/icondetail.png
     - assets/images/icondiagnosa.png
     - assets/images/iconhistory.png
+    - assets/images/kutu_jangkar.jpg
+    - assets/images/fin_rot.jpg
+    - assets/images/cloudy_eyes.jpeg
+    - assets/images/dropsy.jpg
+    - assets/images/black_spot.jpg
+    - assets/images/white_spot.jpg
   
   fonts:
     - family: Urbanist
