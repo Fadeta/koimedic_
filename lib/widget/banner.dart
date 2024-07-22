@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:koimedic/screens/menu/detailpage.dart';
 import 'package:koimedic/widget/detailpenyakit.dart';
 
 class Bannerpage extends StatelessWidget {
-  const Bannerpage({Key? key});
+  const Bannerpage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -57,12 +56,24 @@ class Bannerpage extends StatelessWidget {
                 ],
               ),
             ),
-            // Container(
-            //   height: MediaQuery.of(context).size.height * 0.5,
-            //   width: MediaQuery.of(context).size.width * 0.3,
-            //   alignment: Alignment.bottomCenter,
-            //   child: Image.asset("lib/icons/female.png"),
-            // ),
+            Flexible(
+              child: Container(
+                height: 160,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                child: ClipRRect(
+                  borderRadius: const BorderRadius.only(
+                    topRight: Radius.circular(15),
+                    bottomRight: Radius.circular(15),
+                  ),
+                  child: Image.asset(
+                    "assets/images/koibanner.png",
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       ),

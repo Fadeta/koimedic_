@@ -36,6 +36,7 @@ flutter:
     - assets/images/
     - assets/images/logo1.png
     - assets/images/koi.png
+    - assets/images/koibanner.png
     - assets/images/icondetail.png
     - assets/images/icondiagnosa.png
     - assets/images/iconhistory.png
