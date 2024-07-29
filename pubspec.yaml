@@ -1,11 +1,10 @@
 name: koimedic
 description: "Aplikasi Diagnosa Penyakit Ikan Koi"
-publish_to: 'none' 
+publish_to: 'none'
 version: 1.0.0+1
 
 environment:
   sdk: '>=3.4.0-266.0.dev <4.0.0'
-
 
 dependencies:
   flutter:
@@ -27,9 +26,6 @@ dev_dependencies:
   flutter_lints: ^3.0.0
   flutter_launcher_icons: ^0.9.2
 
-
-
-
 flutter:
   uses-material-design: true
   assets:
@@ -49,12 +45,14 @@ flutter:
     - assets/images/white_spot.jpg
 
 flutter_icons:
-  android: true
+  android: "launcher_icon"
+  ios: true
   image_path: "assets/images/logo1.png"
-  
-  fonts:
-    - family: Urbanist
-      fonts:
-        - asset: assets/fonts/Urbanist-Bold.ttf
-        - asset: assets/fonts/Urbanist-Medium.ttf
-        - asset: assets/fonts/Urbanist-SemiBold.ttf
+
+
+fonts:
+  - family: Urbanist
+    fonts:
+      - asset: assets/fonts/Urbanist-Bold.ttf
+      - asset: assets/fonts/Urbanist-Medium.ttf
+      - asset: assets/fonts/Urbanist-SemiBold.ttf

@@ -37,8 +37,8 @@ android {
         applicationId = "com.example.koimedic_"
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
-        minSdk = 19
-        targetSdk = 31
+        minSdkVersion = 21
+        targetSdkVersion = 31
         multiDexEnabled true
         versionCode = flutterVersionCode.toInteger()
         versionName = flutterVersionName
