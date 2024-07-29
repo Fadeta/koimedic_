@@ -68,29 +68,73 @@ class _HistorypageState extends State<Historypage> {
                 itemBuilder: (context, index) {
                   final diagnosis = diagnoses[index].data();
                   diagnosis['docId'] = diagnoses[index].id; // Add document ID
-                  return ListTile(
-                    leading: CircleAvatar(
-                      child: Text(diagnosis['namakoi']![0]),
-                    ),
-                    title: Text(diagnosis['namakoi']!),
-                    subtitle: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('Jenis Koi: ${diagnosis['jeniskoi']}'),
-                        Text('Umur: ${diagnosis['umur']}'),
-                        Text(
-                            'Hasil Diagnosa: ${diagnosis['hasil_diagnosa'] ?? diagnosis['penyakit']}')
-                      ],
-                    ),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              DetailHistory(diagnosis: diagnosis),
+                  return Padding(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    child: Card(
+                      elevation: 4,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: ListTile(
+                        contentPadding: const EdgeInsets.all(16),
+                        leading: CircleAvatar(
+                          backgroundColor: Colors.black,
+                          child: Text(
+                            diagnosis['namakoi']![0],
+                            style: const TextStyle(
+                              fontFamily: "Urbanist",
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ),
                         ),
-                      );
-                    },
+                        title: Text(
+                          diagnosis['namakoi']!,
+                          style: const TextStyle(
+                            fontFamily: "Urbanist",
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
+                        ),
+                        subtitle: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const SizedBox(height: 8),
+                            Text(
+                              'Jenis Koi: ${diagnosis['jeniskoi']}',
+                              style: const TextStyle(
+                                fontFamily: "Urbanist",
+                                fontSize: 14,
+                              ),
+                            ),
+                            Text(
+                              'Umur: ${diagnosis['umur']}',
+                              style: const TextStyle(
+                                fontFamily: "Urbanist",
+                                fontSize: 14,
+                              ),
+                            ),
+                            Text(
+                              'Hasil Diagnosa: ${diagnosis['hasil_diagnosa'] ?? diagnosis['penyakit']}',
+                              style: const TextStyle(
+                                fontFamily: "Urbanist",
+                                fontSize: 14,
+                              ),
+                            ),
+                          ],
+                        ),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  DetailHistory(diagnosis: diagnosis),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
                   );
                 },
               );

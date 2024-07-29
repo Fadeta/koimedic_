@@ -180,18 +180,31 @@ class _ForwardchainingState extends State<Forwardchaining> {
         padding: const EdgeInsets.all(16.0),
         child: ListView(
           children: _symptoms.keys.map((String key) {
-            return CheckboxListTile(
-              title: Text(key),
-              value: symptoms.contains(_symptoms[key]),
-              onChanged: (bool? value) {
-                setState(() {
-                  if (value == true) {
-                    symptoms.add(_symptoms[key]!);
-                  } else {
-                    symptoms.remove(_symptoms[key]!);
-                  }
-                });
-              },
+            return Card(
+              elevation: 4,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+              margin: const EdgeInsets.symmetric(vertical: 8.0),
+              child: CheckboxListTile(
+                title: Text(
+                  key,
+                  style: const TextStyle(
+                    fontFamily: "Urbanist",
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                value: symptoms.contains(_symptoms[key]),
+                onChanged: (bool? value) {
+                  setState(() {
+                    if (value == true) {
+                      symptoms.add(_symptoms[key]!);
+                    } else {
+                      symptoms.remove(_symptoms[key]!);
+                    }
+                  });
+                },
+              ),
             );
           }).toList(),
         ),
@@ -204,10 +217,16 @@ class _ForwardchainingState extends State<Forwardchaining> {
             foregroundColor: Colors.white,
             backgroundColor: Colors.black,
             padding: const EdgeInsets.symmetric(vertical: 16.0),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
           ),
           child: const Text(
             'Diagnose',
-            style: TextStyle(fontSize: 16),
+            style: TextStyle(
+              fontSize: 16,
+              fontFamily: "Urbanist-Bold",
+            ),
           ),
         ),
       ),

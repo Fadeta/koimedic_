@@ -45,7 +45,10 @@ class _DetailHistoryState extends State<DetailHistory> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Detail History'),
+        title: const Text(
+          'Detail History',
+          style: TextStyle(fontFamily: "Urbanist-Bold"),
+        ),
         backgroundColor: Colors.black,
       ),
       body: Padding(
@@ -54,29 +57,108 @@ class _DetailHistoryState extends State<DetailHistory> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Nama Koi: ${widget.diagnosis['namakoi']}',
-                  style: const TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: "Urbanist")),
-              const SizedBox(height: 10),
-              Text('Jenis Koi: ${widget.diagnosis['jeniskoi']}',
-                  style: const TextStyle(fontSize: 18, fontFamily: "Urbanist")),
-              const SizedBox(height: 10),
-              Text('Umur: ${widget.diagnosis['umur']}',
-                  style: const TextStyle(fontSize: 18, fontFamily: "Urbanist")),
-              const SizedBox(height: 10),
-              Text(
-                  'Hasil Diagnosa: ${widget.diagnosis['hasil_diagnosa'] ?? widget.diagnosis['penyakit']}',
-                  style: const TextStyle(fontSize: 18, fontFamily: "Urbanist")),
-              const SizedBox(height: 10),
-              Text('Treatment: ${widget.diagnosis['treatment']}',
-                  style: const TextStyle(fontSize: 18, fontFamily: "Urbanist")),
+              Card(
+                elevation: 4,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          const Icon(Icons.all_out_outlined,
+                              color: Colors.black),
+                          const SizedBox(width: 10),
+                          Expanded(
+                            child: Text(
+                              'Nama Koi: ${widget.diagnosis['namakoi']}',
+                              style: const TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: "Urbanist",
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 10),
+                      Row(
+                        children: [
+                          const Icon(Icons.category, color: Colors.black),
+                          const SizedBox(width: 10),
+                          Expanded(
+                            child: Text(
+                              'Jenis Koi: ${widget.diagnosis['jeniskoi']}',
+                              style: const TextStyle(
+                                fontSize: 18,
+                                fontFamily: "Urbanist",
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 10),
+                      Row(
+                        children: [
+                          const Icon(Icons.timeline, color: Colors.black),
+                          const SizedBox(width: 10),
+                          Expanded(
+                            child: Text(
+                              'Umur: ${widget.diagnosis['umur']}',
+                              style: const TextStyle(
+                                fontSize: 18,
+                                fontFamily: "Urbanist",
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 10),
+                      Row(
+                        children: [
+                          const Icon(Icons.medical_services,
+                              color: Colors.black),
+                          const SizedBox(width: 10),
+                          Expanded(
+                            child: Text(
+                              'Hasil Diagnosa: ${widget.diagnosis['hasil_diagnosa'] ?? widget.diagnosis['penyakit']}',
+                              style: const TextStyle(
+                                fontSize: 18,
+                                fontFamily: "Urbanist",
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 10),
+                      Row(
+                        children: [
+                          const Icon(Icons.healing, color: Colors.black),
+                          const SizedBox(width: 10),
+                          Expanded(
+                            child: Text(
+                              'Treatment: ${widget.diagnosis['treatment']}',
+                              style: const TextStyle(
+                                fontSize: 18,
+                                fontFamily: "Urbanist",
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
               const SizedBox(height: 30),
               TextField(
                 controller: _feedbackController,
                 decoration: const InputDecoration(
                   labelText: 'Berikan Ulasanmu Disini!',
+                  labelStyle: TextStyle(fontFamily: "Urbanist"),
                   border: OutlineInputBorder(),
                 ),
                 maxLines: 4,
@@ -91,13 +173,17 @@ class _DetailHistoryState extends State<DetailHistory> {
                       horizontal: 50,
                       vertical: 15,
                     ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
                   ),
                   child: const Text(
                     'Simpan',
                     style: TextStyle(
-                        fontSize: 16,
-                        fontFamily: "Urbanist",
-                        color: Colors.white),
+                      fontSize: 16,
+                      fontFamily: "Urbanist",
+                      color: Colors.white,
+                    ),
                   ),
                 ),
               ),

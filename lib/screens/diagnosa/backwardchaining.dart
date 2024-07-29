@@ -238,7 +238,11 @@ class _BackwardChainingPageState extends State<BackwardChainingPage> {
           children: [
             const Text(
               'Pilih Penyakit:',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                fontFamily: "Urbanist-Bold",
+              ),
             ),
             const SizedBox(height: 10),
             DropdownButton<String>(
@@ -255,7 +259,11 @@ class _BackwardChainingPageState extends State<BackwardChainingPage> {
             const SizedBox(height: 20),
             const Text(
               'Gejala-gejala terkait:',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                fontFamily: "Urbanist-Bold",
+              ),
             ),
             const SizedBox(height: 10),
             Expanded(
@@ -290,7 +298,7 @@ class _BackwardChainingPageState extends State<BackwardChainingPage> {
           ),
           child: const Text(
             'Diagnose',
-            style: TextStyle(fontSize: 16),
+            style: TextStyle(fontSize: 16, fontFamily: "Urbanist-Bold"),
           ),
         ),
       ),
