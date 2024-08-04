@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'dart:async';
 import 'dart:convert';
 import 'package:intl/intl.dart';
 import 'package:koimedic/screens/menu/historypage.dart';
@@ -36,44 +37,59 @@ class _ForwardchainingState extends State<Forwardchaining> {
     'Sering menggesekkan tubuh pada dinding': 'G15',
   };
 
-  String diagnosis = '';
-  String treatment = '';
-  String cfPersen = '';
+  List<Map<String, String>> diagnosisList = [];
 
   Future<void> diagnoseKoi() async {
-    final response = await http.post(
-      Uri.parse(
-          'https://deploykoimedic-59755e52928d.herokuapp.com/diagnosaforward'),
-      headers: {'Content-Type': 'application/json'},
-      body: json.encode({'gejala': symptoms}),
-    );
+    try {
+      final response = await http.post(
+        Uri.parse(
+            'https://deploykoimedic-59755e52928d.herokuapp.com/diagnosaforward'),
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode({'gejala': symptoms}),
+      );
 
-    if (response.statusCode == 200) {
-      final data = json.decode(response.body);
-      final diagnosis = data['hasil_diagnosa'];
-      final treatment = data['treatment'];
-      final cfPersen = data['cf_persen'];
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        print('Diagnosis data: $data'); // Debugging line
 
-      setState(() {
-        this.diagnosis = diagnosis;
-        this.treatment = treatment;
-        this.cfPersen = cfPersen;
-      });
+        // Asumsikan data yang diterima adalah List<dynamic> dan kita konversi ke List<Map<String, String>>
+        if (data is List) {
+          List<Map<String, String>> parsedData =
+              (data as List<dynamic>).map((item) {
+            // Pastikan item adalah Map<String, dynamic> atau sesuaikan sesuai format data yang diterima
+            if (item is Map<String, dynamic>) {
+              return {
+                'disease': item['disease']?.toString() ?? '',
+                'cf_persen': item['cf_persen']?.toString() ?? '',
+                'treatment': item['treatment']?.toString() ?? '',
+              };
+            } else {
+              return {'disease': '', 'cf_persen': '', 'treatment': ''};
+            }
+          }).toList();
 
-      await saveDiagnosisToFirestore(diagnosis, symptoms.join(', '), cfPersen);
-      _showDiagnosisDialog(diagnosis, treatment, cfPersen);
-    } else {
-      setState(() {
-        diagnosis = 'Failed to get diagnosis';
-        treatment = '';
-        cfPersen = '';
-      });
-      _showDiagnosisDialog(diagnosis, treatment, cfPersen);
+          setState(() {
+            diagnosisList = parsedData;
+            print('Processed diagnosis list: $diagnosisList');
+          });
+
+          await saveDiagnosisToFirestore(diagnosisList, symptoms.join(', '));
+          _showDiagnosisDialog(diagnosisList);
+        } else {
+          throw Exception('Invalid data format');
+        }
+      } else {
+        print('Failed to get diagnosis, status code: ${response.statusCode}');
+        _showErrorDialog("Error: Failed to get diagnosis from server.");
+      }
+    } catch (e) {
+      print('An error occurred: $e');
+      _showErrorDialog("An error occurred: $e");
     }
   }
 
   Future<void> saveDiagnosisToFirestore(
-      String diagnosis, String symptoms, String cfPersen) async {
+      List<Map<String, String>> diagnosisList, String symptoms) async {
     User? user = FirebaseAuth.instance.currentUser;
 
     if (user != null) {
@@ -97,18 +113,18 @@ class _ForwardchainingState extends State<Forwardchaining> {
         "jeniskoi": widget.koiData.species,
         "umur": widget.koiData.age,
         "gejala": symptoms,
-        "hasil_diagnosa": diagnosis,
-        "cf_persen": cfPersen,
-        "treatment": treatment,
+        "hasil_diagnosa": diagnosisList.map((e) => e['disease']).toList(),
+        "cf_persen": diagnosisList.map((e) => e['cf_persen']).toList(),
+        "treatment": diagnosisList.map((e) => e['treatment']).toList(),
         "timestamp": now,
       }, SetOptions(merge: true));
+      print("Diagnosis saved to Firestore"); // Debugging line
     } else {
       print("User is not logged in");
     }
   }
 
-  void _showDiagnosisDialog(
-      String diagnosis, String treatment, String cfPersen) {
+  void _showDiagnosisDialog(List<Map<String, String>> diagnosisList) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -122,38 +138,86 @@ class _ForwardchainingState extends State<Forwardchaining> {
               ),
             ),
           ),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                'Diagnosis: $diagnosis',
-                style: const TextStyle(
-                  fontFamily: "Urbanist",
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-              const SizedBox(height: 10),
-              Text(
-                'Akurasi: $cfPersen',
-                style: const TextStyle(
-                  fontFamily: "Urbanist",
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-              const SizedBox(height: 10),
-              Text(
-                'Treatment: $treatment',
-                style: const TextStyle(
-                  fontFamily: "Urbanist",
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ],
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: diagnosisList.map((diagnosis) {
+                final disease = diagnosis['disease'] ?? 'Tidak diketahui';
+                final cfPersen = diagnosis['cf_persen'] ?? 'N/A';
+                final treatment =
+                    diagnosis['treatment'] ?? 'Tidak ada treatment';
+
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Diagnosis: $disease',
+                      style: const TextStyle(
+                        fontFamily: "Urbanist",
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Text(
+                      'Akurasi: $cfPersen',
+                      style: const TextStyle(
+                        fontFamily: "Urbanist",
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Text(
+                      'Treatment: $treatment',
+                      style: const TextStyle(
+                        fontFamily: "Urbanist",
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    const Divider(),
+                  ],
+                );
+              }).toList(),
+            ),
           ),
           actions: <Widget>[
             TextButton(
               onPressed: () {
                 Get.to(() => const Historypage());
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showErrorDialog(String errorMessage) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Center(
+            child: Text(
+              'Error',
+              style: TextStyle(
+                fontFamily: "Urbanist-SemiBold",
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+          ),
+          content: Text(
+            errorMessage,
+            style: const TextStyle(
+              fontFamily: "Urbanist",
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
               },
               child: const Text('OK'),
             ),
